@@ -27,7 +27,7 @@ export default function ItemFormPage() {
 
   const [loading, setLoading] = useState(isEdit)
   const [name, setName] = useState('')
-  const [releaseDate, setReleaseDate] = useState('')
+  const [releaseYear, setReleaseYear] = useState('')
   const [image, setImage] = useState<string | null>(null)
   const [status, setStatus] = useState<ItemStatus>('not_owned')
   const [attributes, setAttributes] = useState<AttributeRow[]>([{ rowId: nextRowId(), key: '', value: '' }])
@@ -39,7 +39,7 @@ export default function ItemFormPage() {
       .get(collectionId, itemId)
       .then((item) => {
         setName(item.name)
-        setReleaseDate(item.releaseDate ?? '')
+        setReleaseYear(item.releaseYear !== null ? String(item.releaseYear) : '')
         setImage(item.image)
         setStatus(item.status)
         setAttributes(
@@ -89,7 +89,7 @@ export default function ItemFormPage() {
 
     const payload = {
       name: name.trim(),
-      releaseDate: releaseDate || null,
+      releaseYear: releaseYear ? Number(releaseYear) : null,
       image,
       status,
       attributes: cleanAttributes,
@@ -138,12 +138,17 @@ export default function ItemFormPage() {
           </div>
 
           <div>
-            <label className={labelClass}>DATE DE SORTIE</label>
+            <label className={labelClass}>ANNÉE DE SORTIE</label>
             <input
-              type="date"
+              type="number"
+              inputMode="numeric"
+              min={1000}
+              max={new Date().getFullYear() + 5}
+              step={1}
               className={fieldClass}
-              value={releaseDate}
-              onChange={(e) => setReleaseDate(e.target.value)}
+              value={releaseYear}
+              onChange={(e) => setReleaseYear(e.target.value)}
+              placeholder="Ex: 2023"
             />
           </div>
 

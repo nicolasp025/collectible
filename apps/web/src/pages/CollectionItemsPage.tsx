@@ -1,13 +1,21 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, ChevronRight, Plus } from 'lucide-react'
-import type { Collection } from 'shared-types'
+import type { Collection, Item } from 'shared-types'
 import { collectionsApi } from '../api/collections'
-import { formatDateOnly } from '../utils/formatDate'
 import { ITEM_STATUS_CONFIG } from '../utils/itemStatus'
 import { ItemImage } from '../components/ItemImage'
 
-type SortKey = 'date-desc' | 'date-asc' | 'name-asc' | 'name-desc'
+type SortKey = 'year-desc' | 'year-asc' | 'name-asc' | 'name-desc'
+
+// Items without a year always sink to the bottom; ties (including same year)
+// fall back to the name so the order stays stable and predictable.
+function compareByYear(a: Item, b: Item, direction: 1 | -1) {
+  if (a.releaseYear === b.releaseYear) return a.name.localeCompare(b.name, 'fr', { sensitivity: 'base' })
+  if (a.releaseYear === null) return 1
+  if (b.releaseYear === null) return -1
+  return direction * (b.releaseYear - a.releaseYear)
+}
 
 export default function CollectionItemsPage() {
   const { collectionId } = useParams<{ collectionId: string }>()
@@ -15,7 +23,7 @@ export default function CollectionItemsPage() {
   const [collection, setCollection] = useState<Collection | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [sortKey, setSortKey] = useState<SortKey>('date-desc')
+  const [sortKey, setSortKey] = useState<SortKey>('year-desc')
 
   useEffect(() => {
     if (!collectionId) return
@@ -32,10 +40,10 @@ export default function CollectionItemsPage() {
   const sortedItems = useMemo(() => {
     const arr = [...items]
     switch (sortKey) {
-      case 'date-desc':
-        return arr.sort((a, b) => (b.releaseDate ?? '').localeCompare(a.releaseDate ?? ''))
-      case 'date-asc':
-        return arr.sort((a, b) => (a.releaseDate ?? '').localeCompare(b.releaseDate ?? ''))
+      case 'year-desc':
+        return arr.sort((a, b) => compareByYear(a, b, 1))
+      case 'year-asc':
+        return arr.sort((a, b) => compareByYear(a, b, -1))
       case 'name-asc':
         return arr.sort((a, b) => a.name.localeCompare(b.name, 'fr', { sensitivity: 'base' }))
       case 'name-desc':
@@ -92,8 +100,8 @@ export default function CollectionItemsPage() {
             onChange={(e) => setSortKey(e.target.value as SortKey)}
             className="cursor-pointer border border-rgx-border-strong bg-rgx-surface-alt px-2.5 py-2 font-mono text-[12px] text-rgx-text outline-none"
           >
-            <option value="date-desc">Date de sortie (plus récents)</option>
-            <option value="date-asc">Date de sortie (moins récents)</option>
+            <option value="year-desc">Année de sortie (plus récents)</option>
+            <option value="year-asc">Année de sortie (moins récents)</option>
             <option value="name-asc">Nom (A-Z)</option>
             <option value="name-desc">Nom (Z-A)</option>
           </select>
@@ -133,7 +141,7 @@ export default function CollectionItemsPage() {
                 <div className="px-4 pt-3.5 pb-4">
                   <div className="mb-1.5 font-heading text-[15px] font-semibold">{item.name}</div>
                   <div className="flex items-center justify-between font-mono text-[11.5px] text-rgx-muted">
-                    <span>{formatDateOnly(item.releaseDate)}</span>
+                    <span>{item.releaseYear ?? '—'}</span>
                     <span className="text-rgx-accent">
                       {item.attributes.length} ATTR <ChevronRight size={12} className="inline -translate-y-px" />
                     </span>

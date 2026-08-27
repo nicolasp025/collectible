@@ -1,11 +1,13 @@
 import { Type } from 'class-transformer';
 import {
   IsArray,
-  IsDateString,
   IsEnum,
+  IsInt,
   IsNotEmpty,
   IsOptional,
   IsString,
+  Max,
+  Min,
   ValidateNested,
 } from 'class-validator';
 import { ItemStatus } from '../entities/item.entity';
@@ -17,8 +19,10 @@ export class CreateItemDto {
   name!: string;
 
   @IsOptional()
-  @IsDateString()
-  releaseDate?: string | null;
+  @IsInt()
+  @Min(1000)
+  @Max(new Date().getFullYear() + 5)
+  releaseYear?: number | null;
 
   @IsOptional()
   @IsEnum(ItemStatus)

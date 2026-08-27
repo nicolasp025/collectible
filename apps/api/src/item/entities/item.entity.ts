@@ -27,8 +27,8 @@ export class Item {
   @Column()
   name!: string;
 
-  @Column({ type: 'date', nullable: true })
-  releaseDate!: string | null;
+  @Column({ type: 'int', nullable: true })
+  releaseYear!: number | null;
 
   @Column({
     type: 'simple-enum',

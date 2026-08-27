@@ -8,7 +8,7 @@ export type ItemStatus = 'not_owned' | 'pending' | 'owned';
 export interface Item {
   id: string;
   name: string;
-  releaseDate: string | null;
+  releaseYear: number | null;
   image: string | null;
   status: ItemStatus;
   attributes: Attribute[];
@@ -33,7 +33,7 @@ export type UpdateCollectionPayload = Partial<CreateCollectionPayload>;
 
 export interface CreateItemPayload {
   name: string;
-  releaseDate?: string | null;
+  releaseYear?: number | null;
   image?: string | null;
   status?: ItemStatus;
   attributes?: Attribute[];

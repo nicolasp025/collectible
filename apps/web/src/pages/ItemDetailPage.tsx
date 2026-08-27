@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, Pencil, Trash2 } from 'lucide-react'
 import type { Item } from 'shared-types'
 import { itemsApi } from '../api/items'
-import { formatDateOnly } from '../utils/formatDate'
 import { ITEM_STATUS_CONFIG } from '../utils/itemStatus'
 import { ItemImage } from '../components/ItemImage'
 import { ConfirmModal } from '../components/ConfirmModal'
@@ -67,7 +66,7 @@ export default function ItemDetailPage() {
 
           <div>
             <div className="mb-1.5 font-mono text-[11.5px] tracking-[0.08em] text-rgx-accent">
-              SORTIE : {formatDateOnly(item.releaseDate).toUpperCase()}
+              SORTIE : {item.releaseYear ?? '—'}
             </div>
             <h1 className="m-0 mb-2 font-heading text-[30px] leading-[1.15] font-bold">{item.name}</h1>
             {(() => {
