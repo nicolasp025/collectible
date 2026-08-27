@@ -17,10 +17,23 @@ services:
       context: .
       dockerfile: apps/web/Dockerfile
     restart: unless-stopped
-    ports:
-      - "80:80"
     depends_on:
       - api
+    networks:
+      - default
+      - edge
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=edge
+      - traefik.http.routers.collectible.rule=Host(`collectible.nicolaspotel.dev`)
+      - traefik.http.routers.collectible.entrypoints=websecure
+      - traefik.http.routers.collectible.tls.certresolver=le
+      - traefik.http.services.collectible.loadbalancer.server.port=80
+
+networks:
+  default: {}
+  edge:
+    external: true
 
 volumes:
   api-data:
