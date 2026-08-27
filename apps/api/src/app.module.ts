@@ -9,7 +9,7 @@ import { CollectionModule } from './collection/collection.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: 'inventory.sqlite',
+      database: process.env.DATABASE_PATH ?? 'inventory.sqlite',
       synchronize: true,
       autoLoadEntities: true,
     }),
