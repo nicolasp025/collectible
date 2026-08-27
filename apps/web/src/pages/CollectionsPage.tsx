@@ -54,7 +54,7 @@ export default function CollectionsPage() {
       <div className="flex items-center justify-between border-b border-rgx-border px-7 py-5">
         <span className="font-heading text-[18px] font-bold tracking-[0.06em]">
           <span className="mr-2.5 inline-block h-3 w-3 -translate-y-px bg-rgx-accent [clip-path:polygon(0_0,100%_0,100%_60%,60%_100%,0_100%)]" />
-          RGX <span className="text-rgx-accent">// INVENTORY</span>
+          RGX <span className="text-rgx-accent">// COLLECTIBLE</span>
         </span>
         <div className="flex items-center gap-[18px]">
           <span className="font-mono text-[12px] text-rgx-muted">
