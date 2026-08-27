@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { MoreVertical } from 'lucide-react'
-import { colors } from '../theme'
 
 export function DotMenu({ onEdit, onDelete }: { onEdit: () => void; onDelete: () => void }) {
   const [open, setOpen] = useState(false)
@@ -16,46 +15,28 @@ export function DotMenu({ onEdit, onDelete }: { onEdit: () => void; onDelete: ()
   }, [open])
 
   return (
-    <div ref={ref} style={{ position: 'relative' }}>
+    <div ref={ref} className="relative">
       <button
         onClick={(e) => {
           e.stopPropagation()
           setOpen((v) => !v)
         }}
         aria-label="Actions"
-        style={{
-          background: 'rgba(10,13,8,0.7)',
-          border: `1px solid ${colors.border}`,
-          color: colors.textMuted2,
-          width: 30,
-          height: 30,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          cursor: 'pointer',
-        }}
+        className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center border border-rgx-border bg-[rgba(10,13,8,0.7)] text-rgx-muted-2"
       >
         <MoreVertical size={16} />
       </button>
       {open && (
         <div
           onClick={(e) => e.stopPropagation()}
-          style={{
-            position: 'absolute',
-            top: 34,
-            right: 0,
-            background: colors.surface,
-            border: `1px solid ${colors.borderStrong}`,
-            minWidth: 140,
-            zIndex: 10,
-          }}
+          className="absolute top-[34px] right-0 z-10 min-w-[140px] border border-rgx-border-strong bg-rgx-surface"
         >
           <button
             onClick={() => {
               setOpen(false)
               onEdit()
             }}
-            style={menuItemStyle(colors.accent)}
+            className="block w-full cursor-pointer border-none bg-transparent px-3 py-2.5 text-left font-mono text-[11.5px] tracking-[0.05em] text-rgx-accent"
           >
             MODIFIER
           </button>
@@ -64,7 +45,7 @@ export function DotMenu({ onEdit, onDelete }: { onEdit: () => void; onDelete: ()
               setOpen(false)
               onDelete()
             }}
-            style={menuItemStyle(colors.danger)}
+            className="block w-full cursor-pointer border-none bg-transparent px-3 py-2.5 text-left font-mono text-[11.5px] tracking-[0.05em] text-rgx-danger"
           >
             SUPPRIMER
           </button>
@@ -72,20 +53,4 @@ export function DotMenu({ onEdit, onDelete }: { onEdit: () => void; onDelete: ()
       )}
     </div>
   )
-}
-
-function menuItemStyle(color: string) {
-  return {
-    display: 'block',
-    width: '100%',
-    textAlign: 'left' as const,
-    background: 'transparent',
-    border: 'none',
-    color,
-    padding: '10px 12px',
-    fontFamily: "'JetBrains Mono', monospace",
-    fontSize: 11.5,
-    letterSpacing: '0.05em',
-    cursor: 'pointer',
-  }
 }

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, ImageOff, Upload, X } from 'lucide-react'
 import { itemsApi } from '../api/items'
-import { colors } from '../theme'
 import { ItemImage } from '../components/ItemImage'
 
 const MAX_IMAGE_SIZE = 4 * 1024 * 1024
@@ -15,30 +14,9 @@ function nextRowId() {
 
 type AttributeRow = { rowId: string; key: string; value: string }
 
-function fieldStyle() {
-  return {
-    width: '100%',
-    background: colors.surfaceAlt,
-    border: `1px solid ${colors.borderStrong}`,
-    color: colors.text,
-    padding: '10px 12px',
-    fontFamily: "'Inter', sans-serif",
-    fontSize: 13.5,
-    outline: 'none',
-    boxSizing: 'border-box' as const,
-  }
-}
-
-function labelStyle() {
-  return {
-    display: 'block',
-    fontFamily: "'JetBrains Mono', monospace",
-    fontSize: 11,
-    color: colors.accent,
-    letterSpacing: '0.06em',
-    marginBottom: 6,
-  }
-}
+const fieldClass =
+  'w-full border border-rgx-border-strong bg-rgx-surface-alt px-3 py-2.5 text-[13.5px] text-rgx-text outline-none focus:border-rgx-accent'
+const labelClass = 'mb-1.5 block font-mono text-[11px] tracking-[0.06em] text-rgx-accent'
 
 export default function ItemFormPage() {
   const { collectionId, itemId } = useParams<{ collectionId: string; itemId: string }>()
@@ -123,52 +101,31 @@ export default function ItemFormPage() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', background: colors.bg, color: colors.text, padding: 28 }}>
-        <div style={{ color: colors.textMuted, fontFamily: "'JetBrains Mono', monospace", fontSize: 13 }}>
-          Chargement...
-        </div>
+      <div className="min-h-screen bg-rgx-bg p-7 text-rgx-text">
+        <div className="font-mono text-[13px] text-rgx-muted">Chargement...</div>
       </div>
     )
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: colors.bg, color: colors.text, padding: 28 }}>
-      <div style={{ maxWidth: 640, margin: '0 auto' }}>
+    <div className="min-h-screen bg-rgx-bg p-7 text-rgx-text">
+      <div className="mx-auto max-w-[640px]">
         <button
           onClick={goBack}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: colors.textMuted2,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            cursor: 'pointer',
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: 12,
-            marginBottom: 22,
-            padding: 0,
-          }}
+          className="mb-[22px] flex cursor-pointer items-center gap-1.5 border-none bg-none p-0 font-mono text-[12px] text-rgx-muted-2"
         >
           <ArrowLeft size={14} /> ANNULER
         </button>
 
-        <h1
-          style={{
-            fontFamily: "'Chakra Petch', sans-serif",
-            fontWeight: 700,
-            fontSize: 24,
-            margin: '0 0 24px',
-          }}
-        >
+        <h1 className="m-0 mb-6 font-heading text-[24px] font-bold">
           {isEdit ? "MODIFIER L'ITEM" : 'AJOUTER UN ITEM'}
         </h1>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+        <div className="flex flex-col gap-[18px]">
           <div>
-            <label style={labelStyle()}>NOM *</label>
+            <label className={labelClass}>NOM *</label>
             <input
-              style={fieldStyle()}
+              className={fieldClass}
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Ex: DeathAdder V3 Pro"
@@ -176,34 +133,23 @@ export default function ItemFormPage() {
           </div>
 
           <div>
-            <label style={labelStyle()}>DATE DE SORTIE</label>
+            <label className={labelClass}>DATE DE SORTIE</label>
             <input
               type="date"
-              style={fieldStyle()}
+              className={fieldClass}
               value={releaseDate}
               onChange={(e) => setReleaseDate(e.target.value)}
             />
           </div>
 
           <div>
-            <label style={labelStyle()}>IMAGE</label>
-            <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
-              <ItemImage name={name} image={image} style={{ width: 120, height: 90, flexShrink: 0 }} />
-              <div style={{ flex: 1 }}>
+            <label className={labelClass}>IMAGE</label>
+            <div className="flex items-start gap-3.5">
+              <ItemImage name={name} image={image} className="h-[90px] w-[120px] shrink-0" />
+              <div className="flex-1">
                 <label
                   htmlFor="rgx-file-input"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 8,
-                    justifyContent: 'center',
-                    border: `1px dashed ${colors.borderStrong}`,
-                    color: colors.accent,
-                    padding: '10px 12px',
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 12,
-                    cursor: 'pointer',
-                  }}
+                  className="flex cursor-pointer items-center justify-center gap-2 border border-dashed border-rgx-border-strong px-3 py-2.5 font-mono text-[12px] text-rgx-accent"
                 >
                   <Upload size={14} />
                   {image ? "CHANGER L'IMAGE" : 'CHOISIR UNE IMAGE'}
@@ -212,38 +158,19 @@ export default function ItemFormPage() {
                   id="rgx-file-input"
                   type="file"
                   accept="image/*"
-                  style={{ display: 'none' }}
+                  className="hidden"
                   onChange={handleFileChange}
                 />
                 {image ? (
                   <button
                     type="button"
                     onClick={() => setImage(null)}
-                    style={{
-                      marginTop: 8,
-                      background: 'none',
-                      border: 'none',
-                      color: colors.textMuted2,
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: 11,
-                      cursor: 'pointer',
-                      padding: 0,
-                    }}
+                    className="mt-2 cursor-pointer border-none bg-none p-0 font-mono text-[11px] text-rgx-muted-2"
                   >
                     RETIRER L'IMAGE
                   </button>
                 ) : (
-                  <div
-                    style={{
-                      marginTop: 8,
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 6,
-                      color: colors.textMuted,
-                      fontSize: 11.5,
-                      fontFamily: "'JetBrains Mono', monospace",
-                    }}
-                  >
+                  <div className="mt-2 flex items-center gap-1.5 font-mono text-[11.5px] text-rgx-muted">
                     <ImageOff size={13} /> UN PLACEHOLDER SERA UTILISÉ
                   </div>
                 )}
@@ -252,93 +179,52 @@ export default function ItemFormPage() {
           </div>
 
           <div>
-            <label style={labelStyle()}>ATTRIBUTS</label>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <label className={labelClass}>ATTRIBUTS</label>
+            <div className="flex flex-col gap-2">
               {attributes.map((attr) => (
-                <div key={attr.rowId} style={{ display: 'flex', gap: 8 }}>
+                <div key={attr.rowId} className="flex gap-2">
                   <input
-                    style={{ ...fieldStyle(), width: '38%' }}
+                    className={`${fieldClass} w-[38%]`}
                     value={attr.key}
                     onChange={(e) => updateAttr(attr.rowId, 'key', e.target.value)}
                     placeholder="Clé (ex: Capteur)"
                   />
                   <input
-                    style={fieldStyle()}
+                    className={fieldClass}
                     value={attr.value}
                     onChange={(e) => updateAttr(attr.rowId, 'value', e.target.value)}
                     placeholder="Valeur (ex: Focus Pro 30K)"
                   />
                   <button
                     onClick={() => removeAttr(attr.rowId)}
-                    style={{
-                      background: 'transparent',
-                      border: `1px solid ${colors.borderStrong}`,
-                      color: colors.textMuted2,
-                      cursor: 'pointer',
-                      width: 38,
-                      flexShrink: 0,
-                    }}
                     aria-label="Supprimer l'attribut"
+                    className="w-[38px] shrink-0 cursor-pointer border border-rgx-border-strong bg-transparent text-rgx-muted-2"
                   >
-                    <X size={14} style={{ margin: '0 auto' }} />
+                    <X size={14} className="mx-auto" />
                   </button>
                 </div>
               ))}
             </div>
             <button
               onClick={addAttr}
-              style={{
-                marginTop: 10,
-                background: 'transparent',
-                border: `1px dashed ${colors.borderStrong}`,
-                color: colors.accent,
-                padding: '8px 12px',
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 12,
-                cursor: 'pointer',
-                width: '100%',
-              }}
+              className="mt-2.5 w-full cursor-pointer border border-dashed border-rgx-border-strong bg-transparent px-3 py-2 font-mono text-[12px] text-rgx-accent"
             >
               + AJOUTER UN ATTRIBUT
             </button>
           </div>
 
-          {error && (
-            <div style={{ color: colors.danger, fontFamily: "'JetBrains Mono', monospace", fontSize: 12 }}>
-              {error}
-            </div>
-          )}
+          {error && <div className="font-mono text-[12px] text-rgx-danger">{error}</div>}
 
-          <div style={{ display: 'flex', gap: 10, marginTop: 8 }}>
+          <div className="mt-2 flex gap-2.5">
             <button
               onClick={handleSubmit}
-              style={{
-                background: colors.accent,
-                border: 'none',
-                color: colors.bg,
-                padding: '11px 20px',
-                fontFamily: "'Chakra Petch', sans-serif",
-                fontWeight: 700,
-                fontSize: 13,
-                letterSpacing: '0.04em',
-                cursor: 'pointer',
-                flex: 1,
-              }}
+              className="flex-1 cursor-pointer border-none bg-rgx-accent px-5 py-2.5 font-heading text-[13px] font-bold tracking-[0.04em] text-rgx-bg"
             >
               {isEdit ? 'ENREGISTRER LES MODIFICATIONS' : "AJOUTER L'ITEM"}
             </button>
             <button
               onClick={goBack}
-              style={{
-                background: 'transparent',
-                border: `1px solid ${colors.borderStrong}`,
-                color: colors.text,
-                padding: '11px 18px',
-                fontFamily: "'Chakra Petch', sans-serif",
-                fontWeight: 600,
-                fontSize: 13,
-                cursor: 'pointer',
-              }}
+              className="cursor-pointer border border-rgx-border-strong bg-transparent px-4.5 py-2.5 font-heading text-[13px] font-semibold text-rgx-text"
             >
               ANNULER
             </button>

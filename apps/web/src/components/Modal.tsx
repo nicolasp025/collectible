@@ -1,29 +1,14 @@
 import type { ReactNode } from 'react'
-import { colors } from '../theme'
 
 export function Modal({ children, onClose }: { children: ReactNode; onClose: () => void }) {
   return (
     <div
       onClick={onClose}
-      style={{
-        position: 'fixed',
-        inset: 0,
-        background: 'rgba(5,7,4,0.7)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 50,
-      }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(5,7,4,0.7)]"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        style={{
-          background: colors.surface,
-          border: `1px solid ${colors.borderStrong}`,
-          padding: 24,
-          width: 380,
-          maxWidth: '90vw',
-        }}
+        className="w-[380px] max-w-[90vw] border border-rgx-border-strong bg-rgx-surface p-6"
       >
         {children}
       </div>

@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, Pencil, Trash2 } from 'lucide-react'
 import type { Item } from 'shared-types'
 import { itemsApi } from '../api/items'
-import { colors } from '../theme'
 import { formatDateOnly } from '../utils/formatDate'
 import { ItemImage } from '../components/ItemImage'
 import { ConfirmModal } from '../components/ConfirmModal'
@@ -36,174 +35,72 @@ export default function ItemDetailPage() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', background: colors.bg, color: colors.text, padding: 28 }}>
-        <div style={{ color: colors.textMuted, fontFamily: "'JetBrains Mono', monospace", fontSize: 13 }}>
-          Chargement...
-        </div>
+      <div className="min-h-screen bg-rgx-bg p-7 text-rgx-text">
+        <div className="font-mono text-[13px] text-rgx-muted">Chargement...</div>
       </div>
     )
   }
 
   if (error || !item) {
     return (
-      <div style={{ minHeight: '100vh', background: colors.bg, color: colors.text, padding: 28 }}>
-        <div style={{ color: colors.danger, fontFamily: "'JetBrains Mono', monospace", fontSize: 13 }}>
-          {error || 'Item introuvable.'}
-        </div>
+      <div className="min-h-screen bg-rgx-bg p-7 text-rgx-text">
+        <div className="font-mono text-[13px] text-rgx-danger">{error || 'Item introuvable.'}</div>
       </div>
     )
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: colors.bg, color: colors.text, padding: 28 }}>
-      <div style={{ maxWidth: 900, margin: '0 auto' }}>
+    <div className="min-h-screen bg-rgx-bg p-7 text-rgx-text">
+      <div className="mx-auto max-w-[900px]">
         <button
           onClick={() => navigate(`/collections/${collectionId}`)}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: colors.textMuted2,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            cursor: 'pointer',
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: 12,
-            marginBottom: 22,
-            padding: 0,
-          }}
+          className="mb-[22px] flex cursor-pointer items-center gap-1.5 border-none bg-none p-0 font-mono text-[12px] text-rgx-muted-2"
         >
           <ArrowLeft size={14} /> RETOUR À LA LISTE
         </button>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr', gap: 28 }}>
+        <div className="grid grid-cols-[300px_1fr] gap-7">
           <div>
-            <ItemImage
-              name={item.name}
-              image={item.image}
-              style={{ width: '100%', height: 260, border: `1px solid ${colors.border}` }}
-            />
+            <ItemImage name={item.name} image={item.image} className="h-[260px] w-full border border-rgx-border" />
           </div>
 
           <div>
-            <div
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 11.5,
-                color: colors.accent,
-                letterSpacing: '0.08em',
-                marginBottom: 6,
-              }}
-            >
+            <div className="mb-1.5 font-mono text-[11.5px] tracking-[0.08em] text-rgx-accent">
               SORTIE : {formatDateOnly(item.releaseDate).toUpperCase()}
             </div>
-            <h1
-              style={{
-                fontFamily: "'Chakra Petch', sans-serif",
-                fontWeight: 700,
-                fontSize: 30,
-                margin: '0 0 20px',
-                lineHeight: 1.15,
-              }}
-            >
-              {item.name}
-            </h1>
+            <h1 className="m-0 mb-5 font-heading text-[30px] leading-[1.15] font-bold">{item.name}</h1>
 
-            <div style={{ display: 'flex', gap: 10, marginBottom: 26 }}>
+            <div className="mb-[26px] flex gap-2.5">
               <button
                 onClick={() => navigate(`/collections/${collectionId}/items/${itemId}/edit`)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 7,
-                  background: 'transparent',
-                  border: `1px solid ${colors.accent}`,
-                  color: colors.accent,
-                  padding: '8px 14px',
-                  fontFamily: "'Chakra Petch', sans-serif",
-                  fontWeight: 600,
-                  fontSize: 12.5,
-                  letterSpacing: '0.04em',
-                  cursor: 'pointer',
-                }}
+                className="flex cursor-pointer items-center gap-1.5 border border-rgx-accent bg-transparent px-3.5 py-2 font-heading text-[12.5px] font-semibold tracking-[0.04em] text-rgx-accent"
               >
                 <Pencil size={13} /> MODIFIER
               </button>
               <button
                 onClick={() => setConfirmOpen(true)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 7,
-                  background: 'transparent',
-                  border: '1px solid #3A2323',
-                  color: colors.danger,
-                  padding: '8px 14px',
-                  fontFamily: "'Chakra Petch', sans-serif",
-                  fontWeight: 600,
-                  fontSize: 12.5,
-                  letterSpacing: '0.04em',
-                  cursor: 'pointer',
-                }}
+                className="flex cursor-pointer items-center gap-1.5 border border-[#3A2323] bg-transparent px-3.5 py-2 font-heading text-[12.5px] font-semibold tracking-[0.04em] text-rgx-danger"
               >
                 <Trash2 size={13} /> SUPPRIMER
               </button>
             </div>
 
-            <div
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 11,
-                color: colors.textMuted,
-                letterSpacing: '0.1em',
-                marginBottom: 8,
-                borderBottom: `1px solid ${colors.border}`,
-                paddingBottom: 8,
-              }}
-            >
+            <div className="mb-2 border-b border-rgx-border pb-2 font-mono text-[11px] tracking-[0.1em] text-rgx-muted">
               FICHE TECHNIQUE
             </div>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <table className="w-full border-collapse">
               <tbody>
                 {item.attributes.length === 0 && (
                   <tr>
-                    <td
-                      style={{
-                        padding: '10px 0',
-                        color: colors.textMuted,
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: 12.5,
-                      }}
-                    >
-                      Aucun attribut renseigné.
-                    </td>
+                    <td className="py-2.5 font-mono text-[12.5px] text-rgx-muted">Aucun attribut renseigné.</td>
                   </tr>
                 )}
                 {item.attributes.map((attr, i) => (
-                  <tr key={i} style={{ borderBottom: '1px solid #161C13' }}>
-                    <td
-                      style={{
-                        padding: '9px 14px 9px 0',
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: 12,
-                        color: colors.accent,
-                        letterSpacing: '0.04em',
-                        whiteSpace: 'nowrap',
-                        width: '40%',
-                      }}
-                    >
+                  <tr key={i} className="border-b border-[#161C13]">
+                    <td className="w-[40%] py-2.5 pr-3.5 font-mono text-[12px] tracking-[0.04em] whitespace-nowrap text-rgx-accent">
                       {attr.key.toUpperCase()}
                     </td>
-                    <td
-                      style={{
-                        padding: '9px 0',
-                        fontFamily: "'Inter', sans-serif",
-                        fontSize: 13.5,
-                        color: colors.text,
-                      }}
-                    >
-                      {attr.value}
-                    </td>
+                    <td className="py-2.5 text-[13.5px] text-rgx-text">{attr.value}</td>
                   </tr>
                 ))}
               </tbody>

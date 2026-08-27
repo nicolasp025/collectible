@@ -1,4 +1,3 @@
-import { colors } from '../theme'
 import { Modal } from './Modal'
 
 export function ConfirmModal({
@@ -16,48 +15,18 @@ export function ConfirmModal({
 }) {
   return (
     <Modal onClose={onCancel}>
-      <div
-        style={{
-          fontFamily: "'Chakra Petch', sans-serif",
-          fontWeight: 600,
-          fontSize: 17,
-          color: colors.text,
-          marginBottom: 10,
-        }}
-      >
-        {title}
-      </div>
-      <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 13.5, color: colors.textMuted2, marginBottom: 22 }}>
-        {message}
-      </p>
-      <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+      <div className="mb-2.5 font-heading text-[17px] font-semibold text-rgx-text">{title}</div>
+      <p className="mb-[22px] text-[13.5px] text-rgx-muted-2">{message}</p>
+      <div className="flex justify-end gap-2.5">
         <button
           onClick={onCancel}
-          style={{
-            background: 'transparent',
-            border: `1px solid ${colors.borderStrong}`,
-            color: colors.text,
-            padding: '8px 16px',
-            fontFamily: "'Chakra Petch', sans-serif",
-            fontWeight: 600,
-            fontSize: 12.5,
-            cursor: 'pointer',
-          }}
+          className="cursor-pointer border border-rgx-border-strong bg-transparent px-4 py-2 font-heading text-[12.5px] font-semibold text-rgx-text"
         >
           ANNULER
         </button>
         <button
           onClick={onConfirm}
-          style={{
-            background: colors.danger,
-            border: 'none',
-            color: '#1A0808',
-            padding: '8px 16px',
-            fontFamily: "'Chakra Petch', sans-serif",
-            fontWeight: 600,
-            fontSize: 12.5,
-            cursor: 'pointer',
-          }}
+          className="cursor-pointer border-none bg-rgx-danger px-4 py-2 font-heading text-[12.5px] font-semibold text-[#1A0808]"
         >
           {confirmLabel}
         </button>

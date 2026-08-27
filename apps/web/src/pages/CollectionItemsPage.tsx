@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, ChevronRight, Plus } from 'lucide-react'
 import type { Collection } from 'shared-types'
 import { collectionsApi } from '../api/collections'
-import { colors } from '../theme'
 import { formatDateOnly } from '../utils/formatDate'
 import { ItemImage } from '../components/ItemImage'
 
@@ -45,86 +44,38 @@ export default function CollectionItemsPage() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', background: colors.bg, color: colors.text, padding: 28 }}>
-        <div style={{ color: colors.textMuted, fontFamily: "'JetBrains Mono', monospace", fontSize: 13 }}>
-          Chargement...
-        </div>
+      <div className="min-h-screen bg-rgx-bg p-7 text-rgx-text">
+        <div className="font-mono text-[13px] text-rgx-muted">Chargement...</div>
       </div>
     )
   }
 
   if (error || !collection) {
     return (
-      <div style={{ minHeight: '100vh', background: colors.bg, color: colors.text, padding: 28 }}>
-        <div style={{ color: colors.danger, fontFamily: "'JetBrains Mono', monospace", fontSize: 13 }}>
-          {error || 'Collection introuvable.'}
-        </div>
+      <div className="min-h-screen bg-rgx-bg p-7 text-rgx-text">
+        <div className="font-mono text-[13px] text-rgx-danger">{error || 'Collection introuvable.'}</div>
       </div>
     )
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: colors.bg, color: colors.text, padding: 28 }}>
+    <div className="min-h-screen bg-rgx-bg p-7 text-rgx-text">
       <button
         onClick={() => navigate('/')}
-        style={{
-          background: 'none',
-          border: 'none',
-          color: colors.textMuted2,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 6,
-          cursor: 'pointer',
-          fontFamily: "'JetBrains Mono', monospace",
-          fontSize: 12,
-          marginBottom: 22,
-          padding: 0,
-        }}
+        className="mb-[22px] flex cursor-pointer items-center gap-1.5 border-none bg-none p-0 font-mono text-[12px] text-rgx-muted-2"
       >
         <ArrowLeft size={14} /> RETOUR AUX COLLECTIONS
       </button>
 
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: 20,
-          flexWrap: 'wrap',
-          gap: 12,
-        }}
-      >
-        <h1
-          style={{
-            fontFamily: "'Chakra Petch', sans-serif",
-            fontWeight: 700,
-            fontSize: 26,
-            margin: 0,
-          }}
-        >
-          {collection.name}
-        </h1>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
-          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: colors.textMuted }}>
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+        <h1 className="m-0 font-heading text-[26px] font-bold">{collection.name}</h1>
+        <div className="flex items-center gap-[18px]">
+          <span className="font-mono text-[12px] text-rgx-muted">
             {items.length} ITEM{items.length > 1 ? 'S' : ''}
           </span>
           <button
             onClick={() => navigate(`/collections/${collectionId}/items/new`)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8,
-              background: colors.accent,
-              color: colors.bg,
-              border: 'none',
-              padding: '9px 16px',
-              fontFamily: "'Chakra Petch', sans-serif",
-              fontWeight: 600,
-              fontSize: 13,
-              letterSpacing: '0.04em',
-              cursor: 'pointer',
-              clipPath: 'polygon(0 0, 100% 0, 100% 100%, 12px 100%, 0 calc(100% - 12px))',
-            }}
+            className="flex cursor-pointer items-center gap-2 border-none bg-rgx-accent px-4 py-2.5 font-heading text-[13px] font-semibold tracking-[0.04em] text-rgx-bg [clip-path:polygon(0_0,100%_0,100%_100%,12px_100%,0_calc(100%-12px))]"
           >
             <Plus size={16} strokeWidth={2.5} />
             AJOUTER
@@ -133,30 +84,12 @@ export default function CollectionItemsPage() {
       </div>
 
       {items.length > 0 && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-          <span
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: 11,
-              color: colors.textMuted,
-              letterSpacing: '0.06em',
-            }}
-          >
-            TRIER PAR
-          </span>
+        <div className="mb-5 flex items-center gap-2.5">
+          <span className="font-mono text-[11px] tracking-[0.06em] text-rgx-muted">TRIER PAR</span>
           <select
             value={sortKey}
             onChange={(e) => setSortKey(e.target.value as SortKey)}
-            style={{
-              background: colors.surfaceAlt,
-              border: `1px solid ${colors.borderStrong}`,
-              color: colors.text,
-              padding: '8px 10px',
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: 12,
-              outline: 'none',
-              cursor: 'pointer',
-            }}
+            className="cursor-pointer border border-rgx-border-strong bg-rgx-surface-alt px-2.5 py-2 font-mono text-[12px] text-rgx-text outline-none"
           >
             <option value="date-desc">Date de sortie (plus récents)</option>
             <option value="date-asc">Date de sortie (moins récents)</option>
@@ -167,92 +100,32 @@ export default function CollectionItemsPage() {
       )}
 
       {items.length === 0 ? (
-        <div
-          style={{
-            border: `1px dashed ${colors.borderStrong}`,
-            padding: '60px 20px',
-            textAlign: 'center',
-            color: colors.textMuted,
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: 13,
-          }}
-        >
+        <div className="border border-dashed border-rgx-border-strong px-5 py-[60px] text-center font-mono text-[13px] text-rgx-muted">
           Aucun item référencé pour le moment.
-          <div style={{ marginTop: 14 }}>
+          <div className="mt-3.5">
             <button
               onClick={() => navigate(`/collections/${collectionId}/items/new`)}
-              style={{
-                background: 'transparent',
-                border: `1px solid ${colors.accent}`,
-                color: colors.accent,
-                padding: '8px 16px',
-                fontFamily: "'Chakra Petch', sans-serif",
-                fontWeight: 600,
-                fontSize: 12,
-                letterSpacing: '0.05em',
-                cursor: 'pointer',
-              }}
+              className="cursor-pointer border border-rgx-accent bg-transparent px-4 py-2 font-heading text-[12px] font-semibold tracking-[0.05em] text-rgx-accent"
             >
               AJOUTER UN ITEM
             </button>
           </div>
         </div>
       ) : (
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))',
-            gap: 16,
-          }}
-        >
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(230px,1fr))] gap-4">
           {sortedItems.map((item) => (
             <button
               key={item.id}
               onClick={() => navigate(`/collections/${collectionId}/items/${item.id}`)}
-              className="rgx-card"
-              style={{
-                textAlign: 'left',
-                background: colors.surface,
-                border: `1px solid ${colors.border}`,
-                cursor: 'pointer',
-                padding: 0,
-                display: 'flex',
-                flexDirection: 'column',
-                color: 'inherit',
-                position: 'relative',
-                overflow: 'hidden',
-              }}
+              className="group relative flex cursor-pointer flex-col overflow-hidden border border-rgx-border bg-rgx-surface p-0 text-left text-inherit transition-colors after:absolute after:inset-x-0 after:top-0 after:h-0.5 after:bg-transparent after:content-[''] hover:border-rgx-accent hover:after:bg-rgx-accent"
             >
-              <ItemImage
-                name={item.name}
-                image={item.image}
-                style={{ width: '100%', height: 140, borderBottom: `1px solid ${colors.border}` }}
-              />
-              <div style={{ padding: '14px 16px 16px' }}>
-                <div
-                  style={{
-                    fontFamily: "'Chakra Petch', sans-serif",
-                    fontWeight: 600,
-                    fontSize: 15,
-                    marginBottom: 6,
-                  }}
-                >
-                  {item.name}
-                </div>
-                <div
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 11.5,
-                    color: colors.textMuted,
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}
-                >
+              <ItemImage name={item.name} image={item.image} className="h-[140px] w-full border-b border-rgx-border" />
+              <div className="px-4 pt-3.5 pb-4">
+                <div className="mb-1.5 font-heading text-[15px] font-semibold">{item.name}</div>
+                <div className="flex items-center justify-between font-mono text-[11.5px] text-rgx-muted">
                   <span>{formatDateOnly(item.releaseDate)}</span>
-                  <span style={{ color: colors.accent }}>
-                    {item.attributes.length} ATTR{' '}
-                    <ChevronRight size={12} style={{ display: 'inline', verticalAlign: -2 }} />
+                  <span className="text-rgx-accent">
+                    {item.attributes.length} ATTR <ChevronRight size={12} className="inline -translate-y-px" />
                   </span>
                 </div>
               </div>
@@ -260,11 +133,6 @@ export default function CollectionItemsPage() {
           ))}
         </div>
       )}
-
-      <style>{`
-        .rgx-card { transition: border-color 0.15s ease; }
-        .rgx-card:hover { border-color: ${colors.accent}; }
-      `}</style>
     </div>
   )
 }

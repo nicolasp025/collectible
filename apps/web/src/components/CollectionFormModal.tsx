@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import type { Collection } from 'shared-types'
-import { colors } from '../theme'
 import { Modal } from './Modal'
 
 export function CollectionFormModal({
@@ -26,84 +25,31 @@ export function CollectionFormModal({
 
   return (
     <Modal onClose={onCancel}>
-      <div
-        style={{
-          fontFamily: "'Chakra Petch', sans-serif",
-          fontWeight: 700,
-          fontSize: 18,
-          color: colors.text,
-          marginBottom: 18,
-        }}
-      >
+      <div className="mb-[18px] font-heading text-[18px] font-bold text-rgx-text">
         {isEdit ? 'MODIFIER LA COLLECTION' : 'CRÉER UNE COLLECTION'}
       </div>
 
-      <label
-        style={{
-          display: 'block',
-          fontFamily: "'JetBrains Mono', monospace",
-          fontSize: 11,
-          color: colors.accent,
-          letterSpacing: '0.06em',
-          marginBottom: 6,
-        }}
-      >
-        NOM *
-      </label>
+      <label className="mb-1.5 block font-mono text-[11px] tracking-[0.06em] text-rgx-accent">NOM *</label>
       <input
         autoFocus
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="Ex: Souris"
-        style={{
-          width: '100%',
-          background: colors.surfaceAlt,
-          border: `1px solid ${colors.borderStrong}`,
-          color: colors.text,
-          padding: '10px 12px',
-          fontFamily: "'Inter', sans-serif",
-          fontSize: 13.5,
-          outline: 'none',
-          boxSizing: 'border-box',
-        }}
+        className="w-full border border-rgx-border-strong bg-rgx-surface-alt px-3 py-2.5 text-[13.5px] text-rgx-text outline-none focus:border-rgx-accent"
       />
 
-      {error && (
-        <div style={{ color: colors.danger, fontFamily: "'JetBrains Mono', monospace", fontSize: 12, marginTop: 10 }}>
-          {error}
-        </div>
-      )}
+      {error && <div className="mt-2.5 font-mono text-[12px] text-rgx-danger">{error}</div>}
 
-      <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
+      <div className="mt-5 flex gap-2.5">
         <button
           onClick={handleSubmit}
-          style={{
-            background: colors.accent,
-            border: 'none',
-            color: colors.bg,
-            padding: '10px 18px',
-            fontFamily: "'Chakra Petch', sans-serif",
-            fontWeight: 700,
-            fontSize: 13,
-            letterSpacing: '0.04em',
-            cursor: 'pointer',
-            flex: 1,
-          }}
+          className="flex-1 cursor-pointer border-none bg-rgx-accent px-[18px] py-2.5 font-heading text-[13px] font-bold tracking-[0.04em] text-rgx-bg"
         >
           {isEdit ? 'ENREGISTRER' : 'CRÉER'}
         </button>
         <button
           onClick={onCancel}
-          style={{
-            background: 'transparent',
-            border: `1px solid ${colors.borderStrong}`,
-            color: colors.text,
-            padding: '10px 16px',
-            fontFamily: "'Chakra Petch', sans-serif",
-            fontWeight: 600,
-            fontSize: 13,
-            cursor: 'pointer',
-          }}
+          className="cursor-pointer border border-rgx-border-strong bg-transparent px-4 py-2.5 font-heading text-[13px] font-semibold text-rgx-text"
         >
           ANNULER
         </button>
