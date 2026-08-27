@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, ImageOff, Upload, X } from 'lucide-react'
+import type { ItemStatus } from 'shared-types'
 import { itemsApi } from '../api/items'
 import { ItemImage } from '../components/ItemImage'
+import { ITEM_STATUSES, ITEM_STATUS_CONFIG } from '../utils/itemStatus'
 
 const MAX_IMAGE_SIZE = 4 * 1024 * 1024
 
@@ -27,6 +29,7 @@ export default function ItemFormPage() {
   const [name, setName] = useState('')
   const [releaseDate, setReleaseDate] = useState('')
   const [image, setImage] = useState<string | null>(null)
+  const [status, setStatus] = useState<ItemStatus>('not_owned')
   const [attributes, setAttributes] = useState<AttributeRow[]>([{ rowId: nextRowId(), key: '', value: '' }])
   const [error, setError] = useState('')
 
@@ -38,6 +41,7 @@ export default function ItemFormPage() {
         setName(item.name)
         setReleaseDate(item.releaseDate ?? '')
         setImage(item.image)
+        setStatus(item.status)
         setAttributes(
           item.attributes.length
             ? item.attributes.map((a) => ({ rowId: nextRowId(), key: a.key, value: a.value }))
@@ -87,6 +91,7 @@ export default function ItemFormPage() {
       name: name.trim(),
       releaseDate: releaseDate || null,
       image,
+      status,
       attributes: cleanAttributes,
     }
 
@@ -140,6 +145,21 @@ export default function ItemFormPage() {
               value={releaseDate}
               onChange={(e) => setReleaseDate(e.target.value)}
             />
+          </div>
+
+          <div>
+            <label className={labelClass}>STATUT</label>
+            <select
+              className={`${fieldClass} cursor-pointer`}
+              value={status}
+              onChange={(e) => setStatus(e.target.value as ItemStatus)}
+            >
+              {ITEM_STATUSES.map((s) => (
+                <option key={s} value={s}>
+                  {ITEM_STATUS_CONFIG[s].label}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div>

@@ -42,11 +42,7 @@ export class ItemService {
     return item;
   }
 
-  async update(
-    collectionId: string,
-    id: string,
-    updateItemDto: UpdateItemDto,
-  ) {
+  async update(collectionId: string, id: string, updateItemDto: UpdateItemDto) {
     const item = await this.findOne(collectionId, id);
     Object.assign(item, updateItemDto);
     return this.itemsRepository.save(item);

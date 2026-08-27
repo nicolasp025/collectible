@@ -4,6 +4,7 @@ import { ArrowLeft, ChevronRight, Plus } from 'lucide-react'
 import type { Collection } from 'shared-types'
 import { collectionsApi } from '../api/collections'
 import { formatDateOnly } from '../utils/formatDate'
+import { ITEM_STATUS_CONFIG } from '../utils/itemStatus'
 import { ItemImage } from '../components/ItemImage'
 
 type SortKey = 'date-desc' | 'date-asc' | 'name-asc' | 'name-desc'
@@ -113,24 +114,34 @@ export default function CollectionItemsPage() {
         </div>
       ) : (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(230px,1fr))] gap-4">
-          {sortedItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => navigate(`/collections/${collectionId}/items/${item.id}`)}
-              className="group relative flex cursor-pointer flex-col overflow-hidden border border-rgx-border bg-rgx-surface p-0 text-left text-inherit transition-colors after:absolute after:inset-x-0 after:top-0 after:h-0.5 after:bg-transparent after:content-[''] hover:border-rgx-accent hover:after:bg-rgx-accent"
-            >
-              <ItemImage name={item.name} image={item.image} className="h-[140px] w-full border-b border-rgx-border" />
-              <div className="px-4 pt-3.5 pb-4">
-                <div className="mb-1.5 font-heading text-[15px] font-semibold">{item.name}</div>
-                <div className="flex items-center justify-between font-mono text-[11.5px] text-rgx-muted">
-                  <span>{formatDateOnly(item.releaseDate)}</span>
-                  <span className="text-rgx-accent">
-                    {item.attributes.length} ATTR <ChevronRight size={12} className="inline -translate-y-px" />
-                  </span>
+          {sortedItems.map((item) => {
+            const status = ITEM_STATUS_CONFIG[item.status]
+            const StatusIcon = status.icon
+            return (
+              <button
+                key={item.id}
+                onClick={() => navigate(`/collections/${collectionId}/items/${item.id}`)}
+                className="group relative flex cursor-pointer flex-col overflow-hidden border border-rgx-border bg-rgx-surface p-0 text-left text-inherit transition-colors after:absolute after:inset-x-0 after:top-0 after:h-0.5 after:bg-transparent after:content-[''] hover:border-rgx-accent hover:after:bg-rgx-accent"
+              >
+                <ItemImage name={item.name} image={item.image} className="h-[140px] w-full border-b border-rgx-border" />
+                <div
+                  className={`absolute top-2.5 right-2.5 rounded-full bg-rgx-bg/80 p-1 ${status.colorClass}`}
+                  title={status.label}
+                >
+                  <StatusIcon size={16} strokeWidth={2.5} />
                 </div>
-              </div>
-            </button>
-          ))}
+                <div className="px-4 pt-3.5 pb-4">
+                  <div className="mb-1.5 font-heading text-[15px] font-semibold">{item.name}</div>
+                  <div className="flex items-center justify-between font-mono text-[11.5px] text-rgx-muted">
+                    <span>{formatDateOnly(item.releaseDate)}</span>
+                    <span className="text-rgx-accent">
+                      {item.attributes.length} ATTR <ChevronRight size={12} className="inline -translate-y-px" />
+                    </span>
+                  </div>
+                </div>
+              </button>
+            )
+          })}
         </div>
       )}
     </div>

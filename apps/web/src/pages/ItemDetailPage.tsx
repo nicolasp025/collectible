@@ -4,6 +4,7 @@ import { ArrowLeft, Pencil, Trash2 } from 'lucide-react'
 import type { Item } from 'shared-types'
 import { itemsApi } from '../api/items'
 import { formatDateOnly } from '../utils/formatDate'
+import { ITEM_STATUS_CONFIG } from '../utils/itemStatus'
 import { ItemImage } from '../components/ItemImage'
 import { ConfirmModal } from '../components/ConfirmModal'
 
@@ -68,7 +69,17 @@ export default function ItemDetailPage() {
             <div className="mb-1.5 font-mono text-[11.5px] tracking-[0.08em] text-rgx-accent">
               SORTIE : {formatDateOnly(item.releaseDate).toUpperCase()}
             </div>
-            <h1 className="m-0 mb-5 font-heading text-[30px] leading-[1.15] font-bold">{item.name}</h1>
+            <h1 className="m-0 mb-2 font-heading text-[30px] leading-[1.15] font-bold">{item.name}</h1>
+            {(() => {
+              const status = ITEM_STATUS_CONFIG[item.status]
+              const StatusIcon = status.icon
+              return (
+                <div className={`mb-5 flex items-center gap-1.5 font-mono text-[12px] tracking-[0.04em] ${status.colorClass}`}>
+                  <StatusIcon size={14} strokeWidth={2.5} />
+                  {status.label.toUpperCase()}
+                </div>
+              )
+            })()}
 
             <div className="mb-[26px] flex gap-2.5">
               <button

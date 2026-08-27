@@ -13,6 +13,12 @@ export class Attribute {
   value!: string;
 }
 
+export enum ItemStatus {
+  NOT_OWNED = 'not_owned',
+  PENDING = 'pending',
+  OWNED = 'owned',
+}
+
 @Entity()
 export class Item {
   @PrimaryGeneratedColumn('uuid')
@@ -23,6 +29,13 @@ export class Item {
 
   @Column({ type: 'date', nullable: true })
   releaseDate!: string | null;
+
+  @Column({
+    type: 'simple-enum',
+    enum: ItemStatus,
+    default: ItemStatus.NOT_OWNED,
+  })
+  status!: ItemStatus;
 
   @Column({ type: 'text', nullable: true })
   image!: string | null;

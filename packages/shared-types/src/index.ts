@@ -3,11 +3,14 @@ export interface Attribute {
   value: string;
 }
 
+export type ItemStatus = 'not_owned' | 'pending' | 'owned';
+
 export interface Item {
   id: string;
   name: string;
   releaseDate: string | null;
   image: string | null;
+  status: ItemStatus;
   attributes: Attribute[];
   createdAt: string;
   updatedAt: string;
@@ -32,6 +35,7 @@ export interface CreateItemPayload {
   name: string;
   releaseDate?: string | null;
   image?: string | null;
+  status?: ItemStatus;
   attributes?: Attribute[];
 }
 
