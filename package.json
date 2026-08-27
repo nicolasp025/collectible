@@ -1,0 +1,8 @@
+{
+    "name": "inventory",
+    "private": true,
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ]
+}
