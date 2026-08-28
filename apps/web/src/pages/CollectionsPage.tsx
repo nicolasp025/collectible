@@ -7,6 +7,7 @@ import { formatDate } from '../utils/formatDate'
 import { DotMenu } from '../components/DotMenu'
 import { CollectionFormModal } from '../components/CollectionFormModal'
 import { ConfirmModal } from '../components/ConfirmModal'
+import { ItemImage } from '../components/ItemImage'
 
 export default function CollectionsPage() {
   const navigate = useNavigate()
@@ -27,9 +28,9 @@ export default function CollectionsPage() {
 
   useEffect(load, [])
 
-  const handleSave = (name: string) => {
-    const promise =
-      formTarget === 'new' ? collectionsApi.create({ name }) : collectionsApi.update(formTarget!.id, { name })
+  const handleSave = (name: string, image?: string | null) => {
+    const payload = { name, ...(image !== undefined ? { image } : {}) }
+    const promise = formTarget === 'new' ? collectionsApi.create(payload) : collectionsApi.update(formTarget!.id, payload)
     promise
       .then(() => {
         setFormTarget(null)
@@ -100,9 +101,11 @@ export default function CollectionsPage() {
                 }}
                 className="group relative cursor-pointer overflow-hidden border border-rgx-border bg-rgx-surface transition-colors after:absolute after:inset-x-0 after:top-0 after:h-0.5 after:bg-transparent after:content-[''] hover:border-rgx-accent hover:after:bg-rgx-accent"
               >
-                <div className="flex h-[140px] w-full items-center justify-center border-b border-rgx-border bg-[repeating-linear-gradient(135deg,#12160F_0px,#12160F_10px,#161C13_10px,#161C13_20px)] font-heading text-[2.5rem] font-bold text-[#3A4A35]">
-                  {collection.name.trim().charAt(0).toUpperCase() || '?'}
-                </div>
+                <ItemImage
+                  name={collection.name}
+                  image={collection.thumbnail}
+                  className="h-[140px] w-full border-b border-rgx-border"
+                />
                 <div className="absolute top-2.5 right-2.5" onClick={(e) => e.stopPropagation()}>
                   <DotMenu onEdit={() => setFormTarget(collection)} onDelete={() => setDeleteTarget(collection)} />
                 </div>
