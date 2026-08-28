@@ -58,7 +58,7 @@ export default function ItemDetailPage() {
 
   return (
     <div className="min-h-screen bg-rgx-bg p-7 text-rgx-text">
-      <div className="mx-auto max-w-[900px]">
+      <div className="mx-auto max-w-[1100px]">
         <button
           onClick={() => navigate(`/collections/${collectionId}`)}
           className="mb-[22px] flex cursor-pointer items-center gap-1.5 border-none bg-none p-0 font-mono text-[12px] text-rgx-muted-2"
@@ -66,13 +66,13 @@ export default function ItemDetailPage() {
           <ArrowLeft size={14} /> RETOUR À LA LISTE
         </button>
 
-        <div className="grid grid-cols-[300px_1fr] gap-7">
+        <div className="grid grid-cols-[520px_1fr] gap-7">
           <div className="relative overflow-hidden">
             <ItemImage
               key={photoIndex}
               name={item.name}
               image={item.images[photoIndex] ?? null}
-              className={`h-[260px] w-full border border-rgx-border ${
+              className={`h-[520px] w-full border border-rgx-border ${
                 hasNavigated
                   ? slideDirection === 1
                     ? 'animate-[rgx-slide-in-right_550ms_cubic-bezier(0.4,0,0.2,1)]'
