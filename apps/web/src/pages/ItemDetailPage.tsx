@@ -15,6 +15,8 @@ export default function ItemDetailPage() {
   const [error, setError] = useState('')
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [photoIndex, setPhotoIndex] = useState(0)
+  const [slideDirection, setSlideDirection] = useState<1 | -1>(1)
+  const [hasNavigated, setHasNavigated] = useState(false)
 
   useEffect(() => {
     if (!collectionId || !itemId) return
@@ -24,6 +26,7 @@ export default function ItemDetailPage() {
       .then((i) => {
         setItem(i)
         setPhotoIndex(0)
+        setHasNavigated(false)
       })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false))
@@ -64,23 +67,38 @@ export default function ItemDetailPage() {
         </button>
 
         <div className="grid grid-cols-[300px_1fr] gap-7">
-          <div className="relative">
+          <div className="relative overflow-hidden">
             <ItemImage
+              key={photoIndex}
               name={item.name}
               image={item.images[photoIndex] ?? null}
-              className="h-[260px] w-full border border-rgx-border"
+              className={`h-[260px] w-full border border-rgx-border ${
+                hasNavigated
+                  ? slideDirection === 1
+                    ? 'animate-[rgx-slide-in-right_400ms_cubic-bezier(0.22,1,0.36,1)]'
+                    : 'animate-[rgx-slide-in-left_400ms_cubic-bezier(0.22,1,0.36,1)]'
+                  : ''
+              }`}
             />
             {item.images.length > 1 && (
               <>
                 <button
-                  onClick={() => setPhotoIndex((i) => (i - 1 + item.images.length) % item.images.length)}
+                  onClick={() => {
+                    setHasNavigated(true)
+                    setSlideDirection(-1)
+                    setPhotoIndex((i) => (i - 1 + item.images.length) % item.images.length)
+                  }}
                   aria-label="Photo précédente"
                   className="absolute top-1/2 left-2 flex h-8 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border-none bg-rgx-bg/80 text-rgx-text"
                 >
                   <ChevronLeft size={18} />
                 </button>
                 <button
-                  onClick={() => setPhotoIndex((i) => (i + 1) % item.images.length)}
+                  onClick={() => {
+                    setHasNavigated(true)
+                    setSlideDirection(1)
+                    setPhotoIndex((i) => (i + 1) % item.images.length)
+                  }}
                   aria-label="Photo suivante"
                   className="absolute top-1/2 right-2 flex h-8 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border-none bg-rgx-bg/80 text-rgx-text"
                 >
