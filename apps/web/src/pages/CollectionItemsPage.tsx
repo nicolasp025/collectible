@@ -133,7 +133,7 @@ export default function CollectionItemsPage() {
               >
                 <ItemImage
                   name={item.name}
-                  image={item.thumbnail ?? item.image}
+                  image={item.thumbnail}
                   className="h-[250px] w-full border-b border-rgx-border"
                 />
                 <div

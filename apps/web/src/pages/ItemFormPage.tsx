@@ -28,7 +28,7 @@ export default function ItemFormPage() {
   const [loading, setLoading] = useState(isEdit)
   const [name, setName] = useState('')
   const [releaseYear, setReleaseYear] = useState('')
-  const [image, setImage] = useState<string | null>(null)
+  const [images, setImages] = useState<string[]>([])
   const [status, setStatus] = useState<ItemStatus>('not_owned')
   const [attributes, setAttributes] = useState<AttributeRow[]>([{ rowId: nextRowId(), key: '', value: '' }])
   const [error, setError] = useState('')
@@ -40,7 +40,7 @@ export default function ItemFormPage() {
       .then((item) => {
         setName(item.name)
         setReleaseYear(item.releaseYear !== null ? String(item.releaseYear) : '')
-        setImage(item.image)
+        setImages(item.images)
         setStatus(item.status)
         setAttributes(
           item.attributes.length
@@ -58,18 +58,32 @@ export default function ItemFormPage() {
   const removeAttr = (rowId: string) => setAttributes((prev) => prev.filter((a) => a.rowId !== rowId))
   const addAttr = () => setAttributes((prev) => [...prev, { rowId: nextRowId(), key: '', value: '' }])
 
+  const readFileAsDataUrl = (file: File) =>
+    new Promise<string>((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(reader.result as string)
+      reader.onerror = () => reject(reader.error)
+      reader.readAsDataURL(file)
+    })
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    if (file.size > MAX_IMAGE_SIZE) {
-      setError("L'image dépasse 4 Mo, choisis un fichier plus léger.")
-      return
-    }
-    setError('')
-    const reader = new FileReader()
-    reader.onload = () => setImage(reader.result as string)
-    reader.readAsDataURL(file)
+    const files = Array.from(e.target.files ?? [])
+    e.target.value = ''
+    if (files.length === 0) return
+
+    const validFiles = files.filter((f) => f.size <= MAX_IMAGE_SIZE)
+    setError(
+      validFiles.length < files.length
+        ? "Une ou plusieurs images dépassent 4 Mo et ont été ignorées."
+        : '',
+    )
+
+    Promise.all(validFiles.map(readFileAsDataUrl)).then((dataUrls) =>
+      setImages((prev) => [...prev, ...dataUrls]),
+    )
   }
+
+  const removeImage = (index: number) => setImages((prev) => prev.filter((_, i) => i !== index))
 
   const goBack = () => {
     if (isEdit) navigate(`/collections/${collectionId}/items/${itemId}`)
@@ -90,7 +104,7 @@ export default function ItemFormPage() {
     const payload = {
       name: name.trim(),
       releaseYear: releaseYear ? Number(releaseYear) : null,
-      image,
+      images,
       status,
       attributes: cleanAttributes,
     }
@@ -168,39 +182,42 @@ export default function ItemFormPage() {
           </div>
 
           <div>
-            <label className={labelClass}>IMAGE</label>
-            <div className="flex items-start gap-3.5">
-              <ItemImage name={name} image={image} className="h-[90px] w-[120px] shrink-0" />
-              <div className="flex-1">
-                <label
-                  htmlFor="rgx-file-input"
-                  className="flex cursor-pointer items-center justify-center gap-2 border border-dashed border-rgx-border-strong px-3 py-2.5 font-mono text-[12px] text-rgx-accent"
-                >
-                  <Upload size={14} />
-                  {image ? "CHANGER L'IMAGE" : 'CHOISIR UNE IMAGE'}
-                </label>
-                <input
-                  id="rgx-file-input"
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleFileChange}
-                />
-                {image ? (
+            <label className={labelClass}>IMAGES</label>
+            <div className="flex flex-wrap gap-3">
+              {images.map((img, i) => (
+                <div key={i} className="relative">
+                  <ItemImage name={name} image={img} className="h-[90px] w-[120px]" />
                   <button
                     type="button"
-                    onClick={() => setImage(null)}
-                    className="mt-2 cursor-pointer border-none bg-none p-0 font-mono text-[11px] text-rgx-muted-2"
+                    onClick={() => removeImage(i)}
+                    aria-label="Retirer cette image"
+                    className="absolute top-1 right-1 flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border-none bg-rgx-bg/80 text-rgx-text"
                   >
-                    RETIRER L'IMAGE
+                    <X size={12} />
                   </button>
-                ) : (
-                  <div className="mt-2 flex items-center gap-1.5 font-mono text-[11.5px] text-rgx-muted">
-                    <ImageOff size={13} /> UN PLACEHOLDER SERA UTILISÉ
-                  </div>
-                )}
-              </div>
+                </div>
+              ))}
+              <label
+                htmlFor="rgx-file-input"
+                className="flex h-[90px] w-[120px] cursor-pointer flex-col items-center justify-center gap-1.5 border border-dashed border-rgx-border-strong font-mono text-[11px] text-rgx-accent"
+              >
+                <Upload size={16} />
+                AJOUTER
+              </label>
+              <input
+                id="rgx-file-input"
+                type="file"
+                accept="image/*"
+                multiple
+                className="hidden"
+                onChange={handleFileChange}
+              />
             </div>
+            {images.length === 0 && (
+              <div className="mt-2 flex items-center gap-1.5 font-mono text-[11.5px] text-rgx-muted">
+                <ImageOff size={13} /> UN PLACEHOLDER SERA UTILISÉ
+              </div>
+            )}
           </div>
 
           <div>

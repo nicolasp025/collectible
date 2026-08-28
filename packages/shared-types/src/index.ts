@@ -9,11 +9,11 @@ export interface Item {
   id: string;
   name: string;
   releaseYear: number | null;
-  // Full-resolution image. Only populated on the item detail endpoint —
-  // absent when the item comes from a Collection's `items` (use `thumbnail`
-  // there instead, which is always populated alongside `image`).
-  image: string | null;
-  // Resized/compressed copy of `image`, generated server-side.
+  // Full-resolution photos, in display order. Only populated on the item
+  // detail endpoint — absent when the item comes from a Collection's
+  // `items` (use `thumbnail` there instead).
+  images: string[];
+  // Resized/compressed copy of images[0], generated server-side.
   thumbnail: string | null;
   status: ItemStatus;
   attributes: Attribute[];
@@ -39,7 +39,7 @@ export type UpdateCollectionPayload = Partial<CreateCollectionPayload>;
 export interface CreateItemPayload {
   name: string;
   releaseYear?: number | null;
-  image?: string | null;
+  images?: string[];
   status?: ItemStatus;
   attributes?: Attribute[];
 }

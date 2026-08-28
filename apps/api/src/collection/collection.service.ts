@@ -25,9 +25,10 @@ export class CollectionService {
     const collection = await this.collectionsRepository.findOne({
       where: { id },
       relations: ['items'],
-      // The full-resolution `image` is only needed on the item detail page,
-      // not for the collection grid — leaving it out keeps this response
-      // (and every collection listing) light even with many/large items.
+      // The full-resolution `images` are only needed on the item detail
+      // page, not for the collection grid — leaving them out keeps this
+      // response (and every collection listing) light even with many/large
+      // items or items with several photos.
       select: {
         id: true,
         name: true,

@@ -29,8 +29,9 @@ export class CreateItemDto {
   status?: ItemStatus;
 
   @IsOptional()
-  @IsString()
-  image?: string | null;
+  @IsArray()
+  @IsString({ each: true })
+  images?: string[];
 
   @IsOptional()
   @IsArray()
