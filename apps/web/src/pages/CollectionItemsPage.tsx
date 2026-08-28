@@ -131,7 +131,11 @@ export default function CollectionItemsPage() {
                 onClick={() => navigate(`/collections/${collectionId}/items/${item.id}`)}
                 className="group relative flex cursor-pointer flex-col overflow-hidden border border-rgx-border bg-rgx-surface p-0 text-left text-inherit transition-colors after:absolute after:inset-x-0 after:top-0 after:h-0.5 after:bg-transparent after:content-[''] hover:border-rgx-accent hover:after:bg-rgx-accent"
               >
-                <ItemImage name={item.name} image={item.image} className="h-[250px] w-full border-b border-rgx-border" />
+                <ItemImage
+                  name={item.name}
+                  image={item.thumbnail ?? item.image}
+                  className="h-[250px] w-full border-b border-rgx-border"
+                />
                 <div
                   className={`absolute top-2.5 right-2.5 rounded-full bg-rgx-bg/80 p-1 ${status.colorClass}`}
                   title={status.label}
