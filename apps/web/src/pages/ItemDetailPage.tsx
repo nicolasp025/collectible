@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ArrowLeft, Pencil, Trash2 } from 'lucide-react'
+import { ArrowLeft, ChevronLeft, ChevronRight, Pencil, Trash2 } from 'lucide-react'
 import type { Item } from 'shared-types'
 import { itemsApi } from '../api/items'
 import { ITEM_STATUS_CONFIG } from '../utils/itemStatus'
@@ -14,13 +14,17 @@ export default function ItemDetailPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [confirmOpen, setConfirmOpen] = useState(false)
+  const [photoIndex, setPhotoIndex] = useState(0)
 
   useEffect(() => {
     if (!collectionId || !itemId) return
     setLoading(true)
     itemsApi
       .get(collectionId, itemId)
-      .then(setItem)
+      .then((i) => {
+        setItem(i)
+        setPhotoIndex(0)
+      })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false))
   }, [collectionId, itemId])
@@ -60,8 +64,33 @@ export default function ItemDetailPage() {
         </button>
 
         <div className="grid grid-cols-[300px_1fr] gap-7">
-          <div>
-            <ItemImage name={item.name} image={item.image} className="h-[260px] w-full border border-rgx-border" />
+          <div className="relative">
+            <ItemImage
+              name={item.name}
+              image={item.images[photoIndex] ?? null}
+              className="h-[260px] w-full border border-rgx-border"
+            />
+            {item.images.length > 1 && (
+              <>
+                <button
+                  onClick={() => setPhotoIndex((i) => (i - 1 + item.images.length) % item.images.length)}
+                  aria-label="Photo précédente"
+                  className="absolute top-1/2 left-2 flex h-8 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border-none bg-rgx-bg/80 text-rgx-text"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                <button
+                  onClick={() => setPhotoIndex((i) => (i + 1) % item.images.length)}
+                  aria-label="Photo suivante"
+                  className="absolute top-1/2 right-2 flex h-8 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border-none bg-rgx-bg/80 text-rgx-text"
+                >
+                  <ChevronRight size={18} />
+                </button>
+                <div className="absolute right-2 bottom-2 rounded-full bg-rgx-bg/80 px-2 py-0.5 font-mono text-[11px] text-rgx-text">
+                  {photoIndex + 1} / {item.images.length}
+                </div>
+              </>
+            )}
           </div>
 
           <div>

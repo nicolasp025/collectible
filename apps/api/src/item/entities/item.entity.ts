@@ -37,11 +37,13 @@ export class Item {
   })
   status!: ItemStatus;
 
-  @Column({ type: 'text', nullable: true })
-  image!: string | null;
+  // Full-resolution photos, in display order. images[0] is what the
+  // `thumbnail` below is generated from.
+  @Column({ type: 'simple-json', default: '[]' })
+  images!: string[];
 
-  // Resized/compressed copy of `image`, generated server-side. Used for the
-  // collection grid so that view doesn't have to ship full-resolution
+  // Resized/compressed copy of images[0], generated server-side. Used for
+  // the collection grid so that view doesn't have to ship full-resolution
   // photos over the wire.
   @Column({ type: 'text', nullable: true })
   thumbnail!: string | null;

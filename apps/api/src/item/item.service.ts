@@ -17,11 +17,11 @@ export class ItemService {
 
   async create(collectionId: string, createItemDto: CreateItemDto) {
     const collection = await this.collectionService.findOne(collectionId);
-    const thumbnail = createItemDto.image
-      ? await generateThumbnailSafe(createItemDto.image)
-      : null;
+    const images = createItemDto.images ?? [];
+    const thumbnail = images[0] ? await generateThumbnailSafe(images[0]) : null;
     const item = this.itemsRepository.create({
       ...createItemDto,
+      images,
       thumbnail,
       collection,
     });
@@ -50,10 +50,10 @@ export class ItemService {
   async update(collectionId: string, id: string, updateItemDto: UpdateItemDto) {
     const item = await this.findOne(collectionId, id);
     Object.assign(item, updateItemDto);
-    if ('image' in updateItemDto) {
-      item.thumbnail = updateItemDto.image
-        ? await generateThumbnailSafe(updateItemDto.image)
-        : null;
+    if ('images' in updateItemDto) {
+      const images = updateItemDto.images ?? [];
+      item.images = images;
+      item.thumbnail = images[0] ? await generateThumbnailSafe(images[0]) : null;
     }
     return this.itemsRepository.save(item);
   }
