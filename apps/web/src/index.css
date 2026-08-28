@@ -32,12 +32,14 @@ input[type='date']::-webkit-calendar-picker-indicator {
 
 @keyframes rgx-slide-in-right {
   from {
-    transform: translateX(100%);
+    transform: translateX(40px);
+    opacity: 0;
   }
 }
 
 @keyframes rgx-slide-in-left {
   from {
-    transform: translateX(-100%);
+    transform: translateX(-40px);
+    opacity: 0;
   }
 }

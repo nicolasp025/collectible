@@ -75,8 +75,8 @@ export default function ItemDetailPage() {
               className={`h-[260px] w-full border border-rgx-border ${
                 hasNavigated
                   ? slideDirection === 1
-                    ? 'animate-[rgx-slide-in-right_400ms_cubic-bezier(0.22,1,0.36,1)]'
-                    : 'animate-[rgx-slide-in-left_400ms_cubic-bezier(0.22,1,0.36,1)]'
+                    ? 'animate-[rgx-slide-in-right_550ms_cubic-bezier(0.4,0,0.2,1)]'
+                    : 'animate-[rgx-slide-in-left_550ms_cubic-bezier(0.4,0,0.2,1)]'
                   : ''
               }`}
             />
