@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { generateThumbnailSafe } from '../common/thumbnail';
 import { CreateCollectionDto } from './dto/create-collection.dto';
 import { UpdateCollectionDto } from './dto/update-collection.dto';
 import { Collection } from './entities/collection.entity';
@@ -12,8 +13,14 @@ export class CollectionService {
     private readonly collectionsRepository: Repository<Collection>,
   ) {}
 
-  create(createCollectionDto: CreateCollectionDto) {
-    const collection = this.collectionsRepository.create(createCollectionDto);
+  async create(createCollectionDto: CreateCollectionDto) {
+    const thumbnail = createCollectionDto.image
+      ? await generateThumbnailSafe(createCollectionDto.image)
+      : null;
+    const collection = this.collectionsRepository.create({
+      name: createCollectionDto.name,
+      thumbnail,
+    });
     return this.collectionsRepository.save(collection);
   }
 
@@ -32,6 +39,7 @@ export class CollectionService {
       select: {
         id: true,
         name: true,
+        thumbnail: true,
         createdAt: true,
         updatedAt: true,
         items: {
@@ -54,7 +62,11 @@ export class CollectionService {
 
   async update(id: string, updateCollectionDto: UpdateCollectionDto) {
     const collection = await this.findOne(id);
-    Object.assign(collection, updateCollectionDto);
+    const { image, ...rest } = updateCollectionDto;
+    Object.assign(collection, rest);
+    if ('image' in updateCollectionDto) {
+      collection.thumbnail = image ? await generateThumbnailSafe(image) : null;
+    }
     return this.collectionsRepository.save(collection);
   }
 

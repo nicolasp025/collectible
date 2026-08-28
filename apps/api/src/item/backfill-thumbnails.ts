@@ -2,7 +2,7 @@ import { INestApplicationContext, Logger } from '@nestjs/common';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
 import { Item } from './entities/item.entity';
-import { generateThumbnailSafe } from './thumbnail';
+import { generateThumbnailSafe } from '../common/thumbnail';
 
 const logger = new Logger('ThumbnailBackfill');
 

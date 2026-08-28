@@ -24,6 +24,8 @@ export interface Item {
 export interface Collection {
   id: string;
   name: string;
+  // Resized/compressed cover photo, generated server-side.
+  thumbnail: string | null;
   // Present only when the API includes the relation (detail endpoint), absent on list responses.
   items?: Item[];
   createdAt: string;
@@ -32,6 +34,7 @@ export interface Collection {
 
 export interface CreateCollectionPayload {
   name: string;
+  image?: string | null;
 }
 
 export type UpdateCollectionPayload = Partial<CreateCollectionPayload>;
