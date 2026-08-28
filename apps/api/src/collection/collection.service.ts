@@ -25,6 +25,25 @@ export class CollectionService {
     const collection = await this.collectionsRepository.findOne({
       where: { id },
       relations: ['items'],
+      // The full-resolution `image` is only needed on the item detail page,
+      // not for the collection grid — leaving it out keeps this response
+      // (and every collection listing) light even with many/large items.
+      select: {
+        id: true,
+        name: true,
+        createdAt: true,
+        updatedAt: true,
+        items: {
+          id: true,
+          name: true,
+          releaseYear: true,
+          status: true,
+          thumbnail: true,
+          attributes: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
     });
     if (!collection) {
       throw new NotFoundException(`Collection ${id} not found`);

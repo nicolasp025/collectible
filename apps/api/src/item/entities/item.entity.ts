@@ -40,6 +40,12 @@ export class Item {
   @Column({ type: 'text', nullable: true })
   image!: string | null;
 
+  // Resized/compressed copy of `image`, generated server-side. Used for the
+  // collection grid so that view doesn't have to ship full-resolution
+  // photos over the wire.
+  @Column({ type: 'text', nullable: true })
+  thumbnail!: string | null;
+
   @Column({ type: 'simple-json', default: '[]' })
   attributes!: Attribute[];
 

@@ -5,6 +5,7 @@ import { CollectionService } from '../collection/collection.service';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { Item } from './entities/item.entity';
+import { generateThumbnailSafe } from './thumbnail';
 
 @Injectable()
 export class ItemService {
@@ -16,8 +17,12 @@ export class ItemService {
 
   async create(collectionId: string, createItemDto: CreateItemDto) {
     const collection = await this.collectionService.findOne(collectionId);
+    const thumbnail = createItemDto.image
+      ? await generateThumbnailSafe(createItemDto.image)
+      : null;
     const item = this.itemsRepository.create({
       ...createItemDto,
+      thumbnail,
       collection,
     });
     return this.itemsRepository.save(item);
@@ -45,6 +50,11 @@ export class ItemService {
   async update(collectionId: string, id: string, updateItemDto: UpdateItemDto) {
     const item = await this.findOne(collectionId, id);
     Object.assign(item, updateItemDto);
+    if ('image' in updateItemDto) {
+      item.thumbnail = updateItemDto.image
+        ? await generateThumbnailSafe(updateItemDto.image)
+        : null;
+    }
     return this.itemsRepository.save(item);
   }
 

@@ -2,6 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { json } from 'express';
 import { AppModule } from './app.module';
+import { backfillThumbnails } from './item/backfill-thumbnails';
 import { migrateReleaseDateToReleaseYear } from './item/migrate-release-year';
 
 async function bootstrap() {
@@ -11,6 +12,7 @@ async function bootstrap() {
   app.enableCors();
   app.use(json({ limit: '8mb' }));
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+  await backfillThumbnails(app);
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
