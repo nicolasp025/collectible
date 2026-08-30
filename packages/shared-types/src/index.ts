@@ -3,6 +3,10 @@ export interface Attribute {
   value: string;
 }
 
+export interface AuthUser {
+  email: string;
+}
+
 export type ItemStatus = 'not_owned' | 'pending' | 'owned';
 
 export interface Item {

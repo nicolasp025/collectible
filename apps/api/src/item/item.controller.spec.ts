@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { JwtService } from '@nestjs/jwt';
 import { CollectionService } from '../collection/collection.service';
 import { ItemController } from './item.controller';
 import { ItemService } from './item.service';
@@ -15,6 +16,7 @@ describe('ItemController', () => {
         ItemService,
         { provide: getRepositoryToken(Item), useValue: {} },
         { provide: CollectionService, useValue: {} },
+        { provide: JwtService, useValue: {} },
       ],
     }).compile();
 
