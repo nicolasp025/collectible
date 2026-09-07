@@ -52,12 +52,12 @@ export default function CollectionsPage() {
 
   return (
     <div className="min-h-screen bg-rgx-bg text-rgx-text">
-      <div className="flex items-center justify-between border-b border-rgx-border px-7 py-5">
-        <span className="font-heading text-[18px] font-bold tracking-[0.06em]">
+      <div className="flex flex-col gap-3 border-b border-rgx-border px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-7 sm:py-5">
+        <span className="pr-14 font-heading text-[16px] font-bold tracking-[0.06em] sm:pr-0 sm:text-[18px]">
           <span className="mr-2.5 inline-block h-3 w-3 -translate-y-px bg-rgx-accent [clip-path:polygon(0_0,100%_0,100%_60%,60%_100%,0_100%)]" />
           RGX <span className="text-rgx-accent">// COLLECTIBLE</span>
         </span>
-        <div className="flex items-center gap-[18px]">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-[18px]">
           <span className="font-mono text-[12px] text-rgx-muted">
             {collections.length} COLLECTION{collections.length > 1 ? 'S' : ''}
           </span>
@@ -71,7 +71,7 @@ export default function CollectionsPage() {
         </div>
       </div>
 
-      <div className="p-7">
+      <div className="p-4 sm:p-7">
         {error && <div className="mb-4 font-mono text-[12.5px] text-rgx-danger">{error}</div>}
 
         {loading ? (
@@ -89,7 +89,7 @@ export default function CollectionsPage() {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(230px,1fr))] gap-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-[repeat(auto-fill,minmax(230px,1fr))]">
             {collections.map((collection) => (
               <div
                 key={collection.id}
@@ -104,14 +104,18 @@ export default function CollectionsPage() {
                 <ItemImage
                   name={collection.name}
                   image={collection.thumbnail}
-                  className="h-[140px] w-full border-b border-rgx-border"
+                  className="h-[110px] w-full border-b border-rgx-border sm:h-[140px]"
                 />
                 <div className="absolute top-2.5 right-2.5" onClick={(e) => e.stopPropagation()}>
                   <DotMenu onEdit={() => setFormTarget(collection)} onDelete={() => setDeleteTarget(collection)} />
                 </div>
-                <div className="px-4 pt-3.5 pb-4">
-                  <div className="mb-1.5 font-heading text-[15px] font-semibold">{collection.name}</div>
-                  <div className="font-mono text-[11.5px] text-rgx-muted">{formatDate(collection.createdAt)}</div>
+                <div className="px-3 pt-3 pb-3.5 sm:px-4 sm:pt-3.5 sm:pb-4">
+                  <div className="mb-1.5 truncate font-heading text-[13.5px] font-semibold sm:text-[15px]">
+                    {collection.name}
+                  </div>
+                  <div className="font-mono text-[11px] text-rgx-muted sm:text-[11.5px]">
+                    {formatDate(collection.createdAt)}
+                  </div>
                 </div>
               </div>
             ))}

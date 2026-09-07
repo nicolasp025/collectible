@@ -29,7 +29,7 @@ export function DotMenu({ onEdit, onDelete }: { onEdit: () => void; onDelete: ()
       {open && (
         <div
           onClick={(e) => e.stopPropagation()}
-          className="absolute top-[34px] right-0 z-10 min-w-[140px] border border-rgx-border-strong bg-rgx-surface"
+          className="absolute top-[34px] right-0 z-10 min-w-[110px] border border-rgx-border-strong bg-rgx-surface sm:min-w-[140px]"
         >
           <button
             onClick={() => {

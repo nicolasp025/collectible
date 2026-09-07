@@ -57,22 +57,22 @@ export default function ItemDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-rgx-bg p-7 text-rgx-text">
+    <div className="min-h-screen bg-rgx-bg p-4 text-rgx-text sm:p-7">
       <div className="mx-auto max-w-[1100px]">
         <button
           onClick={() => navigate(`/collections/${collectionId}`)}
-          className="mb-[22px] flex cursor-pointer items-center gap-1.5 border-none bg-none p-0 font-mono text-[12px] text-rgx-muted-2"
+          className="mb-4 flex cursor-pointer items-center gap-1.5 border-none bg-none p-0 font-mono text-[12px] text-rgx-muted-2 sm:mb-[22px]"
         >
           <ArrowLeft size={14} /> RETOUR À LA LISTE
         </button>
 
-        <div className="grid grid-cols-[520px_1fr] gap-7">
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-[520px_1fr] lg:gap-7">
           <div className="relative overflow-hidden">
             <ItemImage
               key={photoIndex}
               name={item.name}
               image={item.images[photoIndex] ?? null}
-              className={`h-[520px] w-full border border-rgx-border ${
+              className={`h-[280px] w-full border border-rgx-border sm:h-[380px] lg:h-[520px] ${
                 hasNavigated
                   ? slideDirection === 1
                     ? 'animate-[rgx-slide-in-right_550ms_cubic-bezier(0.4,0,0.2,1)]'
@@ -115,7 +115,7 @@ export default function ItemDetailPage() {
             <div className="mb-1.5 font-mono text-[11.5px] tracking-[0.08em] text-rgx-accent">
               SORTIE : {item.releaseYear ?? '—'}
             </div>
-            <h1 className="m-0 mb-2 font-heading text-[30px] leading-[1.15] font-bold">{item.name}</h1>
+            <h1 className="m-0 mb-2 font-heading text-[22px] leading-[1.15] font-bold sm:text-[30px]">{item.name}</h1>
             {(() => {
               const status = ITEM_STATUS_CONFIG[item.status]
               const StatusIcon = status.icon
