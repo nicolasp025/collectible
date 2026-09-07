@@ -53,7 +53,7 @@ export default function CollectionItemsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-rgx-bg p-7 text-rgx-text">
+      <div className="min-h-screen bg-rgx-bg p-4 text-rgx-text sm:p-7">
         <div className="font-mono text-[13px] text-rgx-muted">Chargement...</div>
       </div>
     )
@@ -61,24 +61,24 @@ export default function CollectionItemsPage() {
 
   if (error || !collection) {
     return (
-      <div className="min-h-screen bg-rgx-bg p-7 text-rgx-text">
+      <div className="min-h-screen bg-rgx-bg p-4 text-rgx-text sm:p-7">
         <div className="font-mono text-[13px] text-rgx-danger">{error || 'Collection introuvable.'}</div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-rgx-bg p-7 text-rgx-text">
+    <div className="min-h-screen bg-rgx-bg p-4 text-rgx-text sm:p-7">
       <button
         onClick={() => navigate('/')}
-        className="mb-[22px] flex cursor-pointer items-center gap-1.5 border-none bg-none p-0 font-mono text-[12px] text-rgx-muted-2"
+        className="mb-4 flex cursor-pointer items-center gap-1.5 border-none bg-none p-0 font-mono text-[12px] text-rgx-muted-2 sm:mb-[22px]"
       >
         <ArrowLeft size={14} /> RETOUR AUX COLLECTIONS
       </button>
 
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <h1 className="m-0 font-heading text-[26px] font-bold">{collection.name}</h1>
-        <div className="flex items-center gap-[18px]">
+        <h1 className="m-0 font-heading text-[20px] font-bold sm:text-[26px]">{collection.name}</h1>
+        <div className="flex flex-wrap items-center gap-3 sm:gap-[18px]">
           <span className="font-mono text-[12px] text-rgx-muted">
             {items.length} ITEM{items.length > 1 ? 'S' : ''}
           </span>
@@ -121,7 +121,7 @@ export default function CollectionItemsPage() {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(230px,1fr))] gap-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-[repeat(auto-fill,minmax(230px,1fr))]">
           {sortedItems.map((item) => {
             const status = ITEM_STATUS_CONFIG[item.status]
             const StatusIcon = status.icon
@@ -134,7 +134,7 @@ export default function CollectionItemsPage() {
                 <ItemImage
                   name={item.name}
                   image={item.thumbnail}
-                  className="h-[250px] w-full border-b border-rgx-border"
+                  className="h-[170px] w-full border-b border-rgx-border sm:h-[250px]"
                 />
                 <div
                   className={`absolute top-2.5 right-2.5 rounded-full bg-rgx-bg/80 p-1 ${status.colorClass}`}
@@ -142,9 +142,11 @@ export default function CollectionItemsPage() {
                 >
                   <StatusIcon size={16} strokeWidth={2.5} />
                 </div>
-                <div className="px-4 pt-3.5 pb-4">
-                  <div className="mb-1.5 font-heading text-[15px] font-semibold">{item.name}</div>
-                  <div className="flex items-center justify-between font-mono text-[11.5px] text-rgx-muted">
+                <div className="px-3 pt-3 pb-3.5 sm:px-4 sm:pt-3.5 sm:pb-4">
+                  <div className="mb-1.5 truncate font-heading text-[13.5px] font-semibold sm:text-[15px]">
+                    {item.name}
+                  </div>
+                  <div className="flex items-center justify-between font-mono text-[11px] text-rgx-muted sm:text-[11.5px]">
                     <span>{item.releaseYear ?? '—'}</span>
                     <span className="text-rgx-accent">
                       {item.attributes.length} ATTR <ChevronRight size={12} className="inline -translate-y-px" />

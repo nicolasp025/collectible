@@ -120,23 +120,23 @@ export default function ItemFormPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-rgx-bg p-7 text-rgx-text">
+      <div className="min-h-screen bg-rgx-bg p-4 text-rgx-text sm:p-7">
         <div className="font-mono text-[13px] text-rgx-muted">Chargement...</div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-rgx-bg p-7 text-rgx-text">
+    <div className="min-h-screen bg-rgx-bg p-4 text-rgx-text sm:p-7">
       <div className="mx-auto max-w-[640px]">
         <button
           onClick={goBack}
-          className="mb-[22px] flex cursor-pointer items-center gap-1.5 border-none bg-none p-0 font-mono text-[12px] text-rgx-muted-2"
+          className="mb-4 flex cursor-pointer items-center gap-1.5 border-none bg-none p-0 font-mono text-[12px] text-rgx-muted-2 sm:mb-[22px]"
         >
           <ArrowLeft size={14} /> ANNULER
         </button>
 
-        <h1 className="m-0 mb-6 font-heading text-[24px] font-bold">
+        <h1 className="m-0 mb-6 font-heading text-[20px] font-bold sm:text-[24px]">
           {isEdit ? "MODIFIER L'ITEM" : 'AJOUTER UN ITEM'}
         </h1>
 
