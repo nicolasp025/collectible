@@ -25,7 +25,10 @@ export class CollectionService {
   }
 
   findAll() {
-    return this.collectionsRepository.find();
+    return this.collectionsRepository
+      .createQueryBuilder('collection')
+      .loadRelationCountAndMap('collection.itemCount', 'collection.items')
+      .getMany();
   }
 
   async findOne(id: string) {
@@ -48,7 +51,6 @@ export class CollectionService {
           releaseYear: true,
           status: true,
           thumbnail: true,
-          attributes: true,
           createdAt: true,
           updatedAt: true,
         },

@@ -1,8 +1,3 @@
-export interface Attribute {
-  key: string;
-  value: string;
-}
-
 export interface AuthUser {
   email: string;
 }
@@ -20,7 +15,6 @@ export interface Item {
   // Resized/compressed copy of images[0], generated server-side.
   thumbnail: string | null;
   status: ItemStatus;
-  attributes: Attribute[];
   createdAt: string;
   updatedAt: string;
 }
@@ -32,6 +26,8 @@ export interface Collection {
   thumbnail: string | null;
   // Present only when the API includes the relation (detail endpoint), absent on list responses.
   items?: Item[];
+  // Present only on list responses (loaded as a count, not the full relation).
+  itemCount?: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -48,7 +44,6 @@ export interface CreateItemPayload {
   releaseYear?: number | null;
   images?: string[];
   status?: ItemStatus;
-  attributes?: Attribute[];
 }
 
 export type UpdateItemPayload = Partial<CreateItemPayload>;

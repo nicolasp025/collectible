@@ -25,6 +25,10 @@ export class Collection {
   @OneToMany(() => Item, (item) => item.collection)
   items!: Item[];
 
+  // Populated via loadRelationCountAndMap on the list endpoint, where the
+  // full `items` relation isn't loaded for performance reasons.
+  itemCount?: number;
+
   @CreateDateColumn()
   createdAt!: Date;
 

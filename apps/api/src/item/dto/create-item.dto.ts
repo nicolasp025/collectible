@@ -1,4 +1,3 @@
-import { Type } from 'class-transformer';
 import {
   IsArray,
   IsEnum,
@@ -8,10 +7,8 @@ import {
   IsString,
   Max,
   Min,
-  ValidateNested,
 } from 'class-validator';
 import { ItemStatus } from '../entities/item.entity';
-import { AttributeDto } from './attribute.dto';
 
 export class CreateItemDto {
   @IsString()
@@ -32,10 +29,4 @@ export class CreateItemDto {
   @IsArray()
   @IsString({ each: true })
   images?: string[];
-
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => AttributeDto)
-  attributes?: AttributeDto[];
 }

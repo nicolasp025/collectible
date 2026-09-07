@@ -8,11 +8,6 @@ import {
 } from 'typeorm';
 import { Collection } from '../../collection/entities/collection.entity';
 
-export class Attribute {
-  key!: string;
-  value!: string;
-}
-
 export enum ItemStatus {
   NOT_OWNED = 'not_owned',
   PENDING = 'pending',
@@ -47,9 +42,6 @@ export class Item {
   // photos over the wire.
   @Column({ type: 'text', nullable: true })
   thumbnail!: string | null;
-
-  @Column({ type: 'simple-json', default: '[]' })
-  attributes!: Attribute[];
 
   @ManyToOne(() => Collection, (collection) => collection.items, {
     onDelete: 'CASCADE',
