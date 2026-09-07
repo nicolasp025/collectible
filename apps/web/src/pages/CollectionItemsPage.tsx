@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ArrowLeft, ChevronRight, Plus } from 'lucide-react'
+import { ArrowLeft, Check, ChevronRight, Plus } from 'lucide-react'
 import type { Collection, Item } from 'shared-types'
 import { collectionsApi } from '../api/collections'
 import { ITEM_STATUS_CONFIG } from '../utils/itemStatus'
@@ -24,6 +24,7 @@ export default function CollectionItemsPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [sortKey, setSortKey] = useState<SortKey>('year-desc')
+  const [ownedOnly, setOwnedOnly] = useState(false)
 
   useEffect(() => {
     if (!collectionId) return
@@ -36,9 +37,10 @@ export default function CollectionItemsPage() {
   }, [collectionId])
 
   const items = collection?.items ?? []
+  const visibleItems = ownedOnly ? items.filter((i) => i.status === 'owned') : items
 
   const sortedItems = useMemo(() => {
-    const arr = [...items]
+    const arr = [...visibleItems]
     switch (sortKey) {
       case 'year-desc':
         return arr.sort((a, b) => compareByYear(a, b, 1))
@@ -49,7 +51,7 @@ export default function CollectionItemsPage() {
       case 'name-desc':
         return arr.sort((a, b) => b.name.localeCompare(a.name, 'fr', { sensitivity: 'base' }))
     }
-  }, [items, sortKey])
+  }, [visibleItems, sortKey])
 
   if (loading) {
     return (
@@ -93,18 +95,38 @@ export default function CollectionItemsPage() {
       </div>
 
       {items.length > 0 && (
-        <div className="mb-5 flex items-center gap-2.5">
-          <span className="font-mono text-[11px] tracking-[0.06em] text-rgx-muted">TRIER PAR</span>
-          <select
-            value={sortKey}
-            onChange={(e) => setSortKey(e.target.value as SortKey)}
-            className="cursor-pointer border border-rgx-border-strong bg-rgx-surface-alt px-2.5 py-2 font-mono text-[12px] text-rgx-text outline-none"
-          >
-            <option value="year-desc">Année de sortie (plus récents)</option>
-            <option value="year-asc">Année de sortie (moins récents)</option>
-            <option value="name-asc">Nom (A-Z)</option>
-            <option value="name-desc">Nom (Z-A)</option>
-          </select>
+        <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <span className="font-mono text-[11px] tracking-[0.06em] text-rgx-muted">TRIER PAR</span>
+            <select
+              value={sortKey}
+              onChange={(e) => setSortKey(e.target.value as SortKey)}
+              className="cursor-pointer border border-rgx-border-strong bg-rgx-surface-alt px-2.5 py-2 font-mono text-[12px] text-rgx-text outline-none"
+            >
+              <option value="year-desc">Année de sortie (plus récents)</option>
+              <option value="year-asc">Année de sortie (moins récents)</option>
+              <option value="name-asc">Nom (A-Z)</option>
+              <option value="name-desc">Nom (Z-A)</option>
+            </select>
+          </div>
+          <label className="flex cursor-pointer items-center gap-2 font-mono text-[12px] text-rgx-muted select-none">
+            <input
+              type="checkbox"
+              checked={ownedOnly}
+              onChange={(e) => setOwnedOnly(e.target.checked)}
+              className="peer sr-only"
+            />
+            <span
+              className={`flex h-[18px] w-[18px] shrink-0 items-center justify-center border transition-colors [clip-path:polygon(0_0,100%_0,100%_100%,5px_100%,0_calc(100%-5px))] peer-focus-visible:ring-2 peer-focus-visible:ring-rgx-accent peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-rgx-bg ${
+                ownedOnly
+                  ? 'border-rgx-accent bg-rgx-accent'
+                  : 'border-rgx-border-strong bg-rgx-surface-alt hover:border-rgx-accent'
+              }`}
+            >
+              {ownedOnly && <Check size={13} strokeWidth={3} className="text-rgx-bg" />}
+            </span>
+            <span className={ownedOnly ? 'text-rgx-accent' : ''}>POSSÉDÉS UNIQUEMENT</span>
+          </label>
         </div>
       )}
 
@@ -117,6 +139,18 @@ export default function CollectionItemsPage() {
               className="cursor-pointer border border-rgx-accent bg-transparent px-4 py-2 font-heading text-[12px] font-semibold tracking-[0.05em] text-rgx-accent"
             >
               AJOUTER UN OBJET
+            </button>
+          </div>
+        </div>
+      ) : sortedItems.length === 0 ? (
+        <div className="border border-dashed border-rgx-border-strong px-5 py-[60px] text-center font-mono text-[13px] text-rgx-muted">
+          Aucun objet possédé pour le moment.
+          <div className="mt-3.5">
+            <button
+              onClick={() => setOwnedOnly(false)}
+              className="cursor-pointer border border-rgx-accent bg-transparent px-4 py-2 font-heading text-[12px] font-semibold tracking-[0.05em] text-rgx-accent"
+            >
+              AFFICHER TOUS LES OBJETS
             </button>
           </div>
         </div>
