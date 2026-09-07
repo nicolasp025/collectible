@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Plus } from 'lucide-react'
+import { ChevronRight, Plus } from 'lucide-react'
 import type { Collection } from 'shared-types'
 import { collectionsApi } from '../api/collections'
 import { formatDate } from '../utils/formatDate'
@@ -113,8 +113,12 @@ export default function CollectionsPage() {
                   <div className="mb-1.5 truncate font-heading text-[13.5px] font-semibold sm:text-[15px]">
                     {collection.name}
                   </div>
-                  <div className="font-mono text-[11px] text-rgx-muted sm:text-[11.5px]">
-                    {formatDate(collection.createdAt)}
+                  <div className="flex items-center justify-between font-mono text-[11px] text-rgx-muted sm:text-[11.5px]">
+                    <span>{formatDate(collection.createdAt)}</span>
+                    <span className="flex items-center gap-1 text-rgx-accent">
+                      {collection.itemCount ?? 0} OBJET{(collection.itemCount ?? 0) > 1 ? 'S' : ''}
+                      <ChevronRight size={12} className="-translate-y-px" />
+                    </span>
                   </div>
                 </div>
               </div>
@@ -134,7 +138,7 @@ export default function CollectionsPage() {
       {deleteTarget && (
         <ConfirmModal
           title={`Supprimer "${deleteTarget.name}" ?`}
-          message="Cette action est définitive et supprimera aussi tous les items de cette collection."
+          message="Cette action est définitive et supprimera aussi tous les objets de cette collection."
           onConfirm={handleDelete}
           onCancel={() => setDeleteTarget(null)}
         />

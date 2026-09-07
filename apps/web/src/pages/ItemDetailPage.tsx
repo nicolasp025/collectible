@@ -51,7 +51,7 @@ export default function ItemDetailPage() {
   if (error || !item) {
     return (
       <div className="min-h-screen bg-rgx-bg p-7 text-rgx-text">
-        <div className="font-mono text-[13px] text-rgx-danger">{error || 'Item introuvable.'}</div>
+        <div className="font-mono text-[13px] text-rgx-danger">{error || 'Objet introuvable.'}</div>
       </div>
     )
   }
@@ -141,34 +141,13 @@ export default function ItemDetailPage() {
                 <Trash2 size={13} /> SUPPRIMER
               </button>
             </div>
-
-            <div className="mb-2 border-b border-rgx-border pb-2 font-mono text-[11px] tracking-[0.1em] text-rgx-muted">
-              FICHE TECHNIQUE
-            </div>
-            <table className="w-full border-collapse">
-              <tbody>
-                {item.attributes.length === 0 && (
-                  <tr>
-                    <td className="py-2.5 font-mono text-[12.5px] text-rgx-muted">Aucun attribut renseigné.</td>
-                  </tr>
-                )}
-                {item.attributes.map((attr, i) => (
-                  <tr key={i} className="border-b border-[#161C13]">
-                    <td className="w-[40%] py-2.5 pr-3.5 font-mono text-[12px] tracking-[0.04em] whitespace-nowrap text-rgx-accent">
-                      {attr.key.toUpperCase()}
-                    </td>
-                    <td className="py-2.5 text-[13.5px] text-rgx-text">{attr.value}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
           </div>
         </div>
 
         {confirmOpen && (
           <ConfirmModal
             title={`Supprimer "${item.name}" ?`}
-            message="Cette action est définitive et retirera l'item de la liste."
+            message="Cette action est définitive et retirera l'objet de la liste."
             onConfirm={handleDelete}
             onCancel={() => setConfirmOpen(false)}
           />

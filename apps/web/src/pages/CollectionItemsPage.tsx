@@ -80,7 +80,7 @@ export default function CollectionItemsPage() {
         <h1 className="m-0 font-heading text-[20px] font-bold sm:text-[26px]">{collection.name}</h1>
         <div className="flex flex-wrap items-center gap-3 sm:gap-[18px]">
           <span className="font-mono text-[12px] text-rgx-muted">
-            {items.length} ITEM{items.length > 1 ? 'S' : ''}
+            {items.length} OBJET{items.length > 1 ? 'S' : ''}
           </span>
           <button
             onClick={() => navigate(`/collections/${collectionId}/items/new`)}
@@ -110,13 +110,13 @@ export default function CollectionItemsPage() {
 
       {items.length === 0 ? (
         <div className="border border-dashed border-rgx-border-strong px-5 py-[60px] text-center font-mono text-[13px] text-rgx-muted">
-          Aucun item référencé pour le moment.
+          Aucun objet référencé pour le moment.
           <div className="mt-3.5">
             <button
               onClick={() => navigate(`/collections/${collectionId}/items/new`)}
               className="cursor-pointer border border-rgx-accent bg-transparent px-4 py-2 font-heading text-[12px] font-semibold tracking-[0.05em] text-rgx-accent"
             >
-              AJOUTER UN ITEM
+              AJOUTER UN OBJET
             </button>
           </div>
         </div>
@@ -148,8 +148,8 @@ export default function CollectionItemsPage() {
                   </div>
                   <div className="flex items-center justify-between font-mono text-[11px] text-rgx-muted sm:text-[11.5px]">
                     <span>{item.releaseYear ?? '—'}</span>
-                    <span className="text-rgx-accent">
-                      {item.attributes.length} ATTR <ChevronRight size={12} className="inline -translate-y-px" />
+                    <span className="flex items-center gap-1 text-rgx-accent">
+                      VOIR <ChevronRight size={12} className="-translate-y-px" />
                     </span>
                   </div>
                 </div>

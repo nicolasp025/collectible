@@ -8,14 +8,6 @@ import { ITEM_STATUSES, ITEM_STATUS_CONFIG } from '../utils/itemStatus'
 
 const MAX_IMAGE_SIZE = 4 * 1024 * 1024
 
-let rowIdCounter = 0
-function nextRowId() {
-  rowIdCounter += 1
-  return `row-${rowIdCounter}`
-}
-
-type AttributeRow = { rowId: string; key: string; value: string }
-
 const fieldClass =
   'w-full border border-rgx-border-strong bg-rgx-surface-alt px-3 py-2.5 text-[13.5px] text-rgx-text outline-none focus:border-rgx-accent'
 const labelClass = 'mb-1.5 block font-mono text-[11px] tracking-[0.06em] text-rgx-accent'
@@ -30,7 +22,6 @@ export default function ItemFormPage() {
   const [releaseYear, setReleaseYear] = useState('')
   const [images, setImages] = useState<string[]>([])
   const [status, setStatus] = useState<ItemStatus>('not_owned')
-  const [attributes, setAttributes] = useState<AttributeRow[]>([{ rowId: nextRowId(), key: '', value: '' }])
   const [error, setError] = useState('')
 
   useEffect(() => {
@@ -42,21 +33,10 @@ export default function ItemFormPage() {
         setReleaseYear(item.releaseYear !== null ? String(item.releaseYear) : '')
         setImages(item.images)
         setStatus(item.status)
-        setAttributes(
-          item.attributes.length
-            ? item.attributes.map((a) => ({ rowId: nextRowId(), key: a.key, value: a.value }))
-            : [{ rowId: nextRowId(), key: '', value: '' }],
-        )
       })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false))
   }, [isEdit, collectionId, itemId])
-
-  const updateAttr = (rowId: string, field: 'key' | 'value', val: string) => {
-    setAttributes((prev) => prev.map((a) => (a.rowId === rowId ? { ...a, [field]: val } : a)))
-  }
-  const removeAttr = (rowId: string) => setAttributes((prev) => prev.filter((a) => a.rowId !== rowId))
-  const addAttr = () => setAttributes((prev) => [...prev, { rowId: nextRowId(), key: '', value: '' }])
 
   const readFileAsDataUrl = (file: File) =>
     new Promise<string>((resolve, reject) => {
@@ -92,21 +72,16 @@ export default function ItemFormPage() {
 
   const handleSubmit = () => {
     if (!name.trim()) {
-      setError("Le nom de l'item est obligatoire.")
+      setError("Le nom de l'objet est obligatoire.")
       return
     }
     if (!collectionId) return
-
-    const cleanAttributes = attributes
-      .map((a) => ({ key: a.key.trim(), value: a.value.trim() }))
-      .filter((a) => a.key)
 
     const payload = {
       name: name.trim(),
       releaseYear: releaseYear ? Number(releaseYear) : null,
       images,
       status,
-      attributes: cleanAttributes,
     }
 
     const promise = isEdit
@@ -137,7 +112,7 @@ export default function ItemFormPage() {
         </button>
 
         <h1 className="m-0 mb-6 font-heading text-[20px] font-bold sm:text-[24px]">
-          {isEdit ? "MODIFIER L'ITEM" : 'AJOUTER UN ITEM'}
+          {isEdit ? "MODIFIER L'OBJET" : 'AJOUTER UN OBJET'}
         </h1>
 
         <div className="flex flex-col gap-[18px]">
@@ -220,41 +195,6 @@ export default function ItemFormPage() {
             )}
           </div>
 
-          <div>
-            <label className={labelClass}>ATTRIBUTS</label>
-            <div className="flex flex-col gap-2">
-              {attributes.map((attr) => (
-                <div key={attr.rowId} className="flex gap-2">
-                  <input
-                    className={`${fieldClass} w-[38%]`}
-                    value={attr.key}
-                    onChange={(e) => updateAttr(attr.rowId, 'key', e.target.value)}
-                    placeholder="Clé (ex: Capteur)"
-                  />
-                  <input
-                    className={fieldClass}
-                    value={attr.value}
-                    onChange={(e) => updateAttr(attr.rowId, 'value', e.target.value)}
-                    placeholder="Valeur (ex: Focus Pro 30K)"
-                  />
-                  <button
-                    onClick={() => removeAttr(attr.rowId)}
-                    aria-label="Supprimer l'attribut"
-                    className="w-[38px] shrink-0 cursor-pointer border border-rgx-border-strong bg-transparent text-rgx-muted-2"
-                  >
-                    <X size={14} className="mx-auto" />
-                  </button>
-                </div>
-              ))}
-            </div>
-            <button
-              onClick={addAttr}
-              className="mt-2.5 w-full cursor-pointer border border-dashed border-rgx-border-strong bg-transparent px-3 py-2 font-mono text-[12px] text-rgx-accent"
-            >
-              + AJOUTER UN ATTRIBUT
-            </button>
-          </div>
-
           {error && <div className="font-mono text-[12px] text-rgx-danger">{error}</div>}
 
           <div className="mt-2 flex gap-2.5">
@@ -262,7 +202,7 @@ export default function ItemFormPage() {
               onClick={handleSubmit}
               className="flex-1 cursor-pointer border-none bg-rgx-accent px-5 py-2.5 font-heading text-[13px] font-bold tracking-[0.04em] text-rgx-bg"
             >
-              {isEdit ? 'ENREGISTRER LES MODIFICATIONS' : "AJOUTER L'ITEM"}
+              {isEdit ? 'ENREGISTRER LES MODIFICATIONS' : "AJOUTER L'OBJET"}
             </button>
             <button
               onClick={goBack}
