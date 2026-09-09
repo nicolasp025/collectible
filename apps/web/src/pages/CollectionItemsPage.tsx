@@ -82,7 +82,7 @@ export default function CollectionItemsPage() {
         <h1 className="m-0 font-heading text-[20px] font-bold sm:text-[26px]">{collection.name}</h1>
         <div className="flex flex-wrap items-center gap-3 sm:gap-[18px]">
           <span className="font-mono text-[12px] text-rgx-muted">
-            {items.length} OBJET{items.length > 1 ? 'S' : ''}
+            {visibleItems.length} OBJET{visibleItems.length > 1 ? 'S' : ''}
           </span>
           <button
             onClick={() => navigate(`/collections/${collectionId}/items/new`)}
