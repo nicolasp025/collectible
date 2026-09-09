@@ -5,6 +5,9 @@
         "apps/*",
         "packages/*"
     ],
+    "engines": {
+        "node": ">=22.12.0"
+    },
     "scripts": {
         "dev": "dotenv -e .env -- concurrently -n API,WEB -c blue.bold,green.bold \"npm:dev:api\" \"npm:dev:web\"",
         "dev:api": "npm run start:dev --workspace=apps/api",
