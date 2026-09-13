@@ -53,9 +53,10 @@ export default function CollectionsPage() {
   return (
     <div className="min-h-screen bg-rgx-bg text-rgx-text">
       <div className="flex flex-col gap-3 border-b border-rgx-border px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-7 sm:py-5">
-        <span className="pr-14 font-heading text-[16px] font-bold tracking-[0.06em] sm:pr-0 sm:text-[18px]">
-          <span className="mr-2.5 inline-block h-3 w-3 -translate-y-px bg-rgx-accent [clip-path:polygon(0_0,100%_0,100%_60%,60%_100%,0_100%)]" />
-          RGX <span className="text-rgx-accent">// COLLECTIBLE</span>
+        <span className="flex items-center pr-14 font-heading text-[16px] font-bold tracking-[0.06em] sm:pr-0 sm:text-[18px]">
+          <img src="/favicon.svg" alt="" className="mr-2 h-5 w-5" />
+          <span className="mr-1">RGX</span>
+          <span className="text-rgx-accent">// NOVA</span>
         </span>
         <div className="flex flex-wrap items-center gap-3 sm:gap-[18px]">
           <span className="font-mono text-[12px] text-rgx-muted">

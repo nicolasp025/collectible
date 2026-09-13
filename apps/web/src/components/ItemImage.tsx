@@ -4,7 +4,7 @@ function Placeholder({ name, className }: { name: string; className?: string }) 
   const letter = (name || '?').trim().charAt(0).toUpperCase() || '?'
   return (
     <div
-      className={`flex items-center justify-center border border-rgx-border-strong bg-[repeating-linear-gradient(135deg,#12160F_0px,#12160F_10px,#161C13_10px,#161C13_20px)] font-heading font-bold text-[#3A4A35] ${className ?? ''}`}
+      className={`flex items-center justify-center border border-rgx-border-strong bg-[repeating-linear-gradient(135deg,#15101F_0px,#15101F_10px,#1C1530_10px,#1C1530_20px)] font-heading font-bold text-[#4A3A63] ${className ?? ''}`}
     >
       <span className="text-[2.5rem]">{letter}</span>
     </div>
