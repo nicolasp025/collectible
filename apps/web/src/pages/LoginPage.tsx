@@ -3,9 +3,10 @@ import { loginUrl } from '../api/auth'
 export default function LoginPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-rgx-bg px-4 text-center text-rgx-text">
-      <span className="font-heading text-[18px] font-bold tracking-[0.06em] sm:text-[22px]">
-        <span className="mr-2.5 inline-block h-3.5 w-3.5 -translate-y-px bg-rgx-accent [clip-path:polygon(0_0,100%_0,100%_60%,60%_100%,0_100%)]" />
-        RGX <span className="text-rgx-accent">// COLLECTIBLE</span>
+      <span className="flex items-center font-heading text-[18px] font-bold tracking-[0.06em] sm:text-[22px]">
+        <img src="/favicon.svg" alt="" className="mr-2.5 h-6 w-6" />
+        <span className="mr-1">RGX</span>
+        <span className="text-rgx-accent">// NOVA</span>
       </span>
 
       <a
