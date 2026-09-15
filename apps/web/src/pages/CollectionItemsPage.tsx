@@ -174,7 +174,7 @@ export default function CollectionItemsPage() {
                   className={`absolute top-2.5 right-2.5 rounded-full bg-rgx-bg/80 p-1 ${status.colorClass}`}
                   title={status.label}
                 >
-                  <StatusIcon size={16} strokeWidth={2.5} />
+                  <StatusIcon size={20} strokeWidth={2.5} />
                 </div>
                 <div className="px-3 pt-3 pb-3.5 sm:px-4 sm:pt-3.5 sm:pb-4">
                   <div className="mb-1.5 truncate font-heading text-[13.5px] font-semibold sm:text-[15px]">
