@@ -7,7 +7,7 @@ export const ITEM_STATUS_CONFIG: Record<
   ItemStatus,
   { label: string; icon: typeof XCircle; colorClass: string }
 > = {
-  not_owned: { label: 'Non possédé', icon: XCircle, colorClass: 'text-rgx-danger' },
+  not_owned: { label: 'Non possédé', icon: XCircle, colorClass: 'text-rgx-status-not-owned' },
   pending: { label: 'En attente', icon: Clock, colorClass: 'text-rgx-warning' },
-  owned: { label: 'Possédé', icon: CheckCircle2, colorClass: 'text-rgx-accent' },
+  owned: { label: 'Possédé', icon: CheckCircle2, colorClass: 'text-rgx-status-owned' },
 }

@@ -21,7 +21,7 @@ export default function ItemFormPage() {
   const [name, setName] = useState('')
   const [releaseYear, setReleaseYear] = useState('')
   const [images, setImages] = useState<string[]>([])
-  const [status, setStatus] = useState<ItemStatus>('not_owned')
+  const [status, setStatus] = useState<ItemStatus>('owned')
   const [error, setError] = useState('')
 
   useEffect(() => {

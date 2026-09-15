@@ -12,6 +12,8 @@
   --color-rgx-muted-2: #968fa6;
   --color-rgx-danger: #d96a6a;
   --color-rgx-warning: #d9a13a;
+  --color-rgx-status-not-owned: #ef4444;
+  --color-rgx-status-owned: #22c55e;
 
   --font-heading: 'Chakra Petch', sans-serif;
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;

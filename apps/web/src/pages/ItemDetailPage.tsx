@@ -121,7 +121,7 @@ export default function ItemDetailPage() {
               const StatusIcon = status.icon
               return (
                 <div className={`mb-5 flex items-center gap-1.5 font-mono text-[12px] tracking-[0.04em] ${status.colorClass}`}>
-                  <StatusIcon size={14} strokeWidth={2.5} />
+                  <StatusIcon size={17} strokeWidth={2.5} />
                   {status.label.toUpperCase()}
                 </div>
               )
